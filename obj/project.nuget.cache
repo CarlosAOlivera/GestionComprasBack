@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "OCrXeZybgZyZZlwWbR5cxT2AiGDpy0cs9hq8euIE2zuNvc0Ul1Ifojmv9fXXe02KK1YIHVHyi6ja/SYhg0G91A==",
+  "dgSpecHash": "wPDZ0cXQHwBRFLjfyHE8xi+ALOCsi1Ka5DsXkJUuGNFVBwbwJ7V2vGGQc0CNcNhv0oNJC+d5KCpy5xeWh3YUQA==",
   "success": true,
-  "projectFilePath": "C:\\Users\\carlo\\source\\repos\\GestionCompras\\back\\Backend.csproj",
+  "projectFilePath": "C:\\Users\\carlo\\source\\repos\\ComprasBack\\Backend.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\carlo\\.nuget\\packages\\azure.core\\1.24.0\\azure.core.1.24.0.nupkg.sha512",
     "C:\\Users\\carlo\\.nuget\\packages\\azure.identity\\1.6.0\\azure.identity.1.6.0.nupkg.sha512",

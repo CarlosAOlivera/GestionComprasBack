@@ -5,35 +5,47 @@ namespace LionDev.Models
 {
     public class Comprador
     {
-        public required Guid IdComprador { get; set; }
-                
-        //longitud mínima 3, máxima 30
-        public required string Nombres { get; set; }
-        
-        //longitud mínima 3, máxima 30        
-        public required string Apellidos { get; set; }
+        [Key]
+        public Guid IdComprador { get; set; }
 
-        //longitud mínima 9, máxima 30
-        public required string CorreoElectronico { get; set; }
+        [Required]
+        [StringLength(30, MinimumLength = 3)]
+        public string Nombres { get; set; }
 
-        //longitud mínima 3, máxima 30
-        public required string TipoDeDocumento { get; set; }
+        [Required]
+        [StringLength(30, MinimumLength = 3)]
+        public string Apellidos { get; set; }
 
-        //longitud mínima 5, máxima 16
-        public required int NumeroDeDocumento { get; set; }
+        [Required]
+        [StringLength(30, MinimumLength = 9)]
+        [EmailAddress]
+        public string CorreoElectronico { get; set; }
 
-        //Longitud mínima 5, máxima 30, debe tener mayúsculas, minúsculas y números
-        public required string Contrasena { get; set; }
+        [Required]
+        [StringLength(30, MinimumLength = 3)]
+        public string TipoDeDocumento { get; set; }
 
-        //longitud mínima 8, máxima 9
-        public string? Genero { get; set; }
+        [Required]
+        [Range(10000, 9999999999999999)]
+        public int NumeroDeDocumento { get; set; }
 
-        //longitud mínima 7, máxima 30
-        public required string Direccion { get; set; }        
+        [Required]
+        [StringLength(30, MinimumLength = 5)]
+        [RegularExpression("(?=.*[a-z])(?=.*[A-Z])(?=.*\\d).{5,}")]
+        public string Contrasena { get; set; }
 
-        //Longitud mínima 3, máxima de 30
-        public required string Rol { get; set; }
+        [StringLength(9, MinimumLength = 8)]
+        public string Genero { get; set; }
+
+        [Required]
+        [StringLength(30, MinimumLength = 7)]
+        public string Direccion { get; set; }
+
+        [Required]
+        [StringLength(30, MinimumLength = 3)]
+        public string Rol { get; set; }
 
         //public ICollection<Factura>? Factura { get; set; }
     }
 }
+
