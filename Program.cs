@@ -24,7 +24,9 @@ builder.Services.AddEndpointsApiExplorer();
 
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddDbContext<LionDev.ApplicationDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("ConnectionString")));
+builder.Services.AddDbContext<LionDev.ApplicationDbContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("ConnectionString"))
+);
 
 builder.Services.AddControllers().AddJsonOptions(x =>
                 x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);

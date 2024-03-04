@@ -1,3 +1,4 @@
+using Backend;
 using LionDev.Models;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json.Linq;
@@ -35,7 +36,7 @@ namespace LionDev.Controllers
             if(!rToken.success) return rToken;
 
             //Usuario usuario = rToken.result;
-            Comprador comprador = rToken.result;
+            Usuario comprador = rToken.result;
 
             //if (usuario.rol != "administrador")
             if (comprador.Rol != "Administrador")

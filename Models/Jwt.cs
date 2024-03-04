@@ -1,4 +1,5 @@
 ﻿using System.Security.Claims;
+using Backend;
 
 namespace LionDev.Models
 {
@@ -26,8 +27,8 @@ namespace LionDev.Models
                 var id = identity.Claims.FirstOrDefault(x => x.Type == "id").Value;
                 //Usuario usuario = Usuario.DB().FirstOrDefault(x => x.idUsuario == id);
 
-                Comprador comprador = context.Compradores
-                    .Where(x => x.IdComprador.ToString() == id)
+                Usuario usuario = context.Usuarios
+                    .Where(x => x.IdUsuario.ToString() == id)
                     .FirstOrDefault();
 
                 return new
@@ -35,7 +36,7 @@ namespace LionDev.Models
                     success = true,
                     message = "exito",
                     //result = usuario
-                    result = comprador
+                    result = usuario
                 };
             }
             catch (Exception ex) 
