@@ -25,7 +25,7 @@
       "launchBrowser": true,
       //"launchUrl": "usuario/login",
       "launchUrl": "WeatherForecast/Get",
-      "applicationUrl": "https://localhost:7145;http://localhost:5101",
+      "applicationUrl": "http://localhost:5101;http://localhost:5101",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       }

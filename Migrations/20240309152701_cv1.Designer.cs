@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Backend.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240303150628_cv1")]
+    [Migration("20240309152701_cv1")]
     partial class cv1
     {
         /// <inheritdoc />
@@ -44,15 +44,19 @@ namespace Backend.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("Nombre")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ParaSexo")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Referencia")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Talla")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("UrlImagen")
@@ -68,7 +72,7 @@ namespace Backend.Migrations
                     b.HasData(
                         new
                         {
-                            IdProducto = new Guid("5cf79cd6-b6ea-4a01-aa87-d27787cbd27b"),
+                            IdProducto = new Guid("da43d14c-0557-42b6-89b3-1831e195701f"),
                             Cantidad = 15,
                             Color = "Negro",
                             Descripcion = "Chaqueta",
@@ -82,7 +86,7 @@ namespace Backend.Migrations
                         },
                         new
                         {
-                            IdProducto = new Guid("e8ee7dac-7acb-4ba4-bf9b-01cc0c847c7d"),
+                            IdProducto = new Guid("e1b26ab7-c2c1-4900-95cb-113f17eb6b6e"),
                             Cantidad = 15,
                             Color = "Blanco y rojo",
                             Descripcion = "Falda larga",
@@ -96,7 +100,7 @@ namespace Backend.Migrations
                         },
                         new
                         {
-                            IdProducto = new Guid("cf33ddf8-f9ed-4096-bd2e-ad18a5cd1dfd"),
+                            IdProducto = new Guid("80c481f4-2c24-4289-bfe7-0dae0928eb83"),
                             Cantidad = 25,
                             Color = "Blanco",
                             Descripcion = "Camiseta corta",
@@ -136,6 +140,7 @@ namespace Backend.Migrations
                         .HasColumnType("nvarchar(30)");
 
                     b.Property<string>("Rol")
+                        .IsRequired()
                         .HasMaxLength(30)
                         .HasColumnType("nvarchar(30)");
 
@@ -146,7 +151,7 @@ namespace Backend.Migrations
                     b.HasData(
                         new
                         {
-                            IdUsuario = new Guid("f5276a36-02a5-46a5-a8aa-e934168f0810"),
+                            IdUsuario = new Guid("50c9c421-fc48-44f3-9b9a-0935651aecbe"),
                             Apellidos = "Falcao",
                             Contrasena = "Rada1",
                             CorreoElectronico = "rada@gmail.com",
@@ -155,11 +160,11 @@ namespace Backend.Migrations
                         },
                         new
                         {
-                            IdUsuario = new Guid("57bf3638-33ad-433f-bfd1-9e14a98ef8a6"),
-                            Apellidos = "Rodriguez",
-                            Contrasena = "James1",
-                            CorreoElectronico = "james@gmail.com",
-                            Nombres = "James",
+                            IdUsuario = new Guid("4bb03cec-6850-409b-b888-1ad38b838f40"),
+                            Apellidos = "Olivera",
+                            Contrasena = "Admin1",
+                            CorreoElectronico = "carlos@gmail.com",
+                            Nombres = "Carlos",
                             Rol = "Administrador"
                         });
                 });

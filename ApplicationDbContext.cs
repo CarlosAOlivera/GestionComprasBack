@@ -70,9 +70,8 @@ namespace LionDev
 
             // Seeds
             modelBuilder.Entity<Usuario>().HasData(
-                new Usuario
-                {
-                    IdUsuario = Guid.NewGuid(),
+                new Usuario { 
+                    IdUsuario = Guid.NewGuid(), 
                     Nombres = "Radamel",
                     Apellidos = "Falcao",
                     CorreoElectronico = "rada@gmail.com",
@@ -86,19 +85,19 @@ namespace LionDev
                 new Usuario
                 {
                     IdUsuario = Guid.NewGuid(),
-                    Nombres = "James",
-                    Apellidos = "Rodriguez",
-                    CorreoElectronico = "james@gmail.com",
+                    Nombres = "Carlos",
+                    Apellidos = "Olivera",
+                    CorreoElectronico = "carlos@gmail.com",
                     //TipoDeDocumento = "Cedula",
                     //NumeroDeDocumento = "12346",
-                    Contrasena = "James1",
+                    Contrasena = "Admin1",
                     //Genero = "Masculino",
                     //Direccion = "Calle 2",
                     Rol = "Administrador"
                 }
             );
 
-            modelBuilder.Entity<Producto>().HasData(
+            modelBuilder.Entity<Producto>().HasData(              
                 new Producto
                 {
                     IdProducto = Guid.NewGuid(),
@@ -145,6 +144,6 @@ namespace LionDev
 
 
             base.OnModelCreating(modelBuilder);
-        }
     }
+}
 }

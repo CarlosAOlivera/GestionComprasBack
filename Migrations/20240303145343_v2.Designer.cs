@@ -4,6 +4,7 @@ using LionDev;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Backend.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240303145343_v2")]
+    partial class v2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -69,7 +72,7 @@ namespace Backend.Migrations
                     b.HasData(
                         new
                         {
-                            IdProducto = new Guid("da43d14c-0557-42b6-89b3-1831e195701f"),
+                            IdProducto = new Guid("53c2e6c9-077a-4ffc-83b3-dcf976761eea"),
                             Cantidad = 15,
                             Color = "Negro",
                             Descripcion = "Chaqueta",
@@ -83,7 +86,7 @@ namespace Backend.Migrations
                         },
                         new
                         {
-                            IdProducto = new Guid("e1b26ab7-c2c1-4900-95cb-113f17eb6b6e"),
+                            IdProducto = new Guid("50834e10-050a-4a89-9e04-cf640c6c6864"),
                             Cantidad = 15,
                             Color = "Blanco y rojo",
                             Descripcion = "Falda larga",
@@ -97,7 +100,7 @@ namespace Backend.Migrations
                         },
                         new
                         {
-                            IdProducto = new Guid("80c481f4-2c24-4289-bfe7-0dae0928eb83"),
+                            IdProducto = new Guid("e2ecd84f-6005-43f2-a657-0b1bf7e0e7e5"),
                             Cantidad = 25,
                             Color = "Blanco",
                             Descripcion = "Camiseta corta",
@@ -131,12 +134,32 @@ namespace Backend.Migrations
                         .HasMaxLength(30)
                         .HasColumnType("nvarchar(30)");
 
+                    b.Property<string>("Direccion")
+                        .IsRequired()
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)");
+
+                    b.Property<string>("Genero")
+                        .IsRequired()
+                        .HasMaxLength(9)
+                        .HasColumnType("nvarchar(9)");
+
                     b.Property<string>("Nombres")
                         .IsRequired()
                         .HasMaxLength(30)
                         .HasColumnType("nvarchar(30)");
 
+                    b.Property<string>("NumeroDeDocumento")
+                        .IsRequired()
+                        .HasMaxLength(16)
+                        .HasColumnType("nvarchar(16)");
+
                     b.Property<string>("Rol")
+                        .IsRequired()
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)");
+
+                    b.Property<string>("TipoDeDocumento")
                         .IsRequired()
                         .HasMaxLength(30)
                         .HasColumnType("nvarchar(30)");
@@ -148,21 +171,29 @@ namespace Backend.Migrations
                     b.HasData(
                         new
                         {
-                            IdUsuario = new Guid("50c9c421-fc48-44f3-9b9a-0935651aecbe"),
+                            IdUsuario = new Guid("0a3d4e55-2e51-490c-84e6-af8daf1e602f"),
                             Apellidos = "Falcao",
                             Contrasena = "Rada1",
                             CorreoElectronico = "rada@gmail.com",
+                            Direccion = "Calle 1",
+                            Genero = "Masculino",
                             Nombres = "Radamel",
-                            Rol = "Comprador"
+                            NumeroDeDocumento = "12345",
+                            Rol = "Comprador",
+                            TipoDeDocumento = "Cedula"
                         },
                         new
                         {
-                            IdUsuario = new Guid("4bb03cec-6850-409b-b888-1ad38b838f40"),
-                            Apellidos = "Olivera",
-                            Contrasena = "Admin1",
-                            CorreoElectronico = "carlos@gmail.com",
-                            Nombres = "Carlos",
-                            Rol = "Administrador"
+                            IdUsuario = new Guid("ddc7b9c9-81c4-4f6a-aa2e-4c42e37608d4"),
+                            Apellidos = "Rodriguez",
+                            Contrasena = "James1",
+                            CorreoElectronico = "james@gmail.com",
+                            Direccion = "Calle 2",
+                            Genero = "Masculino",
+                            Nombres = "James",
+                            NumeroDeDocumento = "12346",
+                            Rol = "Administrador",
+                            TipoDeDocumento = "Cedula"
                         });
                 });
 #pragma warning restore 612, 618

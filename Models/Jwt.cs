@@ -1,5 +1,4 @@
 ﻿using System.Security.Claims;
-using Backend;
 
 namespace LionDev.Models
 {

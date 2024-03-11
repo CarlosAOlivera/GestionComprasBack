@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Backend.Migrations
 {
     /// <inheritdoc />
-    public partial class cv1 : Migration
+    public partial class inicio : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -18,16 +18,16 @@ namespace Backend.Migrations
                 columns: table => new
                 {
                     IdProducto = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Nombre = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Referencia = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Nombre = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Referencia = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     UrlImagen = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Descripcion = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Color = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Cantidad = table.Column<int>(type: "int", nullable: false),
-                    Talla = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Talla = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Valor = table.Column<int>(type: "int", nullable: false),
                     EsDeLosMasBuscados = table.Column<bool>(type: "bit", nullable: false),
-                    ParaSexo = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    ParaSexo = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -42,8 +42,12 @@ namespace Backend.Migrations
                     Nombres = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false),
                     Apellidos = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false),
                     CorreoElectronico = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false),
+                    TipoDeDocumento = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false),
+                    NumeroDeDocumento = table.Column<string>(type: "nvarchar(16)", maxLength: 16, nullable: false),
                     Contrasena = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Rol = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: true)
+                    Genero = table.Column<string>(type: "nvarchar(9)", maxLength: 9, nullable: false),
+                    Direccion = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false),
+                    Rol = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -55,18 +59,18 @@ namespace Backend.Migrations
                 columns: new[] { "IdProducto", "Cantidad", "Color", "Descripcion", "EsDeLosMasBuscados", "Nombre", "ParaSexo", "Referencia", "Talla", "UrlImagen", "Valor" },
                 values: new object[,]
                 {
-                    { new Guid("5cf79cd6-b6ea-4a01-aa87-d27787cbd27b"), 15, "Negro", "Chaqueta", true, "Chaqueta", "Masculino", "C3", "14", "ProductosImagenes/C3.png", 140000 },
-                    { new Guid("cf33ddf8-f9ed-4096-bd2e-ad18a5cd1dfd"), 25, "Blanco", "Camiseta corta", true, "Camiseta", "Femenino", "CA5", "16", "ProductosImagenes/CA5.png", 45000 },
-                    { new Guid("e8ee7dac-7acb-4ba4-bf9b-01cc0c847c7d"), 15, "Blanco y rojo", "Falda larga", true, "Falda larga", "Femenino", "FL3", "14", "ProductosImagenes/FL3.png", 35000 }
+                    { new Guid("2dec61e1-bdf2-4812-9b7f-629981f445fb"), 15, "Blanco y rojo", "Falda larga", true, "Falda larga", "Femenino", "FL3", "14", "ProductosImagenes/FL3.png", 35000 },
+                    { new Guid("35c9fe8f-5419-495a-bbfe-22473b3cea4b"), 25, "Blanco", "Camiseta corta", true, "Camiseta", "Femenino", "CA5", "16", "ProductosImagenes/CA5.png", 45000 },
+                    { new Guid("655360b2-9b43-4119-ba75-6791e2782e5a"), 15, "Negro", "Chaqueta", true, "Chaqueta", "Masculino", "C3", "14", "ProductosImagenes/C3.png", 140000 }
                 });
 
             migrationBuilder.InsertData(
                 table: "Usuarios",
-                columns: new[] { "IdUsuario", "Apellidos", "Contrasena", "CorreoElectronico", "Nombres", "Rol" },
+                columns: new[] { "IdUsuario", "Apellidos", "Contrasena", "CorreoElectronico", "Direccion", "Genero", "Nombres", "NumeroDeDocumento", "Rol", "TipoDeDocumento" },
                 values: new object[,]
                 {
-                    { new Guid("57bf3638-33ad-433f-bfd1-9e14a98ef8a6"), "Rodriguez", "James1", "james@gmail.com", "James", "Administrador" },
-                    { new Guid("f5276a36-02a5-46a5-a8aa-e934168f0810"), "Falcao", "Rada1", "rada@gmail.com", "Radamel", "Comprador" }
+                    { new Guid("5630ff27-8c29-407c-9263-e35be20c634c"), "Falcao", "Rada1", "rada@gmail.com", "Calle 1", "Masculino", "Radamel", "12345", "Comprador", "Cedula" },
+                    { new Guid("5d1d4802-13c3-4c72-8d73-70d104af9af2"), "Rodriguez", "James1", "james@gmail.com", "Calle 2", "Masculino", "James", "12346", "Administrador", "Cedula" }
                 });
         }
 

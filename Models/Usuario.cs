@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace LionDev.Models
 {
@@ -38,7 +39,7 @@ namespace LionDev.Models
         [StringLength(30, MinimumLength = 7)]
         public string Direccion { get; set; }*/
 
-        /*[Required]*/
+        //[Required]
         [StringLength(30, MinimumLength = 3)]
         public string Rol { get; set; }
 
