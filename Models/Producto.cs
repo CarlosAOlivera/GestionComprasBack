@@ -15,8 +15,8 @@
         public required bool EsDeLosMasBuscados { get; set; }
         public required string ParaSexo { get; set; }
 
-        //public Guid IdMarca { get; set; }
-        //public required Marca Marca { get; set; }
+        public Guid IdMarca { get; set; }
+        public Marca Marca { get; set; } = new Marca() { Nombre = "ValorPredeterminado" };
 
         //public required ICollection<DetalleFactura> DetalleFactura { get; set; }
     }
