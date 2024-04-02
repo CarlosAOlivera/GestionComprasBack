@@ -1,27 +1,20 @@
-﻿using System.Collections.Generic;
-using System.Reflection.Emit;
-using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Microsoft.EntityFrameworkCore;
 using LionDev.Models;
+using System;
+using Backend.Migrations;
 
 namespace LionDev
 {
     public class ApplicationDbContext : DbContext
     {
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
-                   : base(options)
-        { }
+            : base(options)
+        {
+        }
 
-        //public DbSet<DetalleFactura> DetalleFacturas { get; set; }
+        // Entities
         public DbSet<Producto> Productos { get; set; }
-        //public DbSet<Factura> Facturas { get; set; }
-        public DbSet<Marca> Marcas { get; set; }        
-
+        public DbSet<Marca> Marcas { get; set; }
         public DbSet<Usuario> Usuarios { get; set; }
         public DbSet<Color> Colores { get; set; }
         public DbSet<Talla> Tallas { get; set; }
@@ -29,62 +22,24 @@ namespace LionDev
         public DbSet<ProductoTalla> ProductoTallas { get; set; }
 
 
-
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            // Call the base method to ensure it's not overwritten
             base.OnModelCreating(modelBuilder);
-            // Relaciones y configuraciones de modelos aquí usando Fluent API
 
-            //Las PKs
-            //modelBuilder.Entity<DetalleFactura>()
-            //    .HasKey(df => df.IdDetalleFactura);
-
-            modelBuilder.Entity<Producto>()
-                .HasKey(df => df.IdProducto);
-
-            modelBuilder.Entity<Usuario>()
-               .HasKey(df => df.IdUsuario);
-
-            //modelBuilder.Entity<Factura>()
-            //    .HasKey(df => df.IdFactura);
-
-            modelBuilder.Entity<Marca>()
-                .HasKey(df => df.IdMarca);
-
-            modelBuilder.Entity<ProductoColor>()
-                .HasKey(pc => new { pc.IdProducto, pc.IdColor });
-
-            modelBuilder.Entity<ProductoTalla>()
-                .HasKey(pt => new { pt.IdProducto, pt.IdTalla });
-
-            //modelBuilder.Entity<DetalleFactura>()
-            //    .Property(df => df.Cantidad)
-            //    .IsRequired();
-
-            //Las relaciones
-            //modelBuilder.Entity<DetalleFactura>()
-            //    .HasOne(df => df.Factura)
-            //    .WithMany(f => f.DetalleFactura)
-            //    .HasForeignKey(df => df.IdFactura);
-
-            //modelBuilder.Entity<Factura>()
-            //    .HasOne(df => df.Comprador)
-            //    .WithMany(f => f.Factura)
-            //    .HasForeignKey(df => df.IdComprador);
-
-            //modelBuilder.Entity<DetalleFactura>()
-            //    .HasOne(df => df.Producto)
-            //    .WithMany(f => f.DetalleFactura)
-            //    .HasForeignKey(df => df.IdProducto);
-
-            //modelBuilder.Entity<Producto>()
-            //    .HasOne(df => df.Marca)
-            //    .WithMany(f => f.Producto)
-            //    .HasForeignKey(df => df.IdMarca);
+            // Configure keys and relationships
+            modelBuilder.Entity<Producto>().HasKey(p => p.IdProducto);
+            modelBuilder.Entity<Marca>().HasKey(m => m.IdMarca);
+            modelBuilder.Entity<Usuario>().HasKey(u => u.IdUsuario);
+            modelBuilder.Entity<Color>().HasKey(c => c.IdColor);
+            modelBuilder.Entity<Talla>().HasKey(t => t.IdTalla);
+            modelBuilder.Entity<ProductoColor>().HasKey(pc => new { pc.IdProducto, pc.IdColor });
+            modelBuilder.Entity<ProductoTalla>().HasKey(pt => new { pt.IdProducto, pt.IdTalla });
 
             modelBuilder.Entity<Producto>()
                 .HasOne(df => df.Marca)
                 .WithMany(f => f.Producto)
+                //.WithMany()
                 .HasForeignKey(df => df.IdMarca);
 
             // Seeds para Marca
@@ -108,7 +63,7 @@ namespace LionDev
             // Seeds para Usuario
             modelBuilder.Entity<Usuario>().HasData(
                 new Usuario { 
-                    IdUsuario = Guid.NewGuid(), 
+                    IdUsuario = Guid.Parse("9b380e62 - 52f2 - 4fe6 - a0fc - 99664828f3af"), 
                     Nombres = "Radamel",
                     Apellidos = "Falcao",
                     CorreoElectronico = "rada@gmail.com",
@@ -117,7 +72,7 @@ namespace LionDev
                 },
                 new Usuario
                 {
-                    IdUsuario = Guid.NewGuid(),
+                    IdUsuario = Guid.Parse("72322d7a - a194 - 4cb1 - a43c - ef7f04d5ca1c"),
                     Nombres = "Carlos",
                     Apellidos = "Olivera",
                     CorreoElectronico = "carlos@gmail.com",
@@ -130,7 +85,7 @@ namespace LionDev
             modelBuilder.Entity<Producto>().HasData(              
                 new Producto
                 {
-                    IdProducto = Guid.NewGuid(),
+                    IdProducto = Guid.Parse("2d98ccdb-9393-4d36-998b-7b1ad994e8e0"),
                     Nombre = "Camiseta Levi's Original",
                     Referencia = "CL001",
                     UrlImagen = "images/levis-camiseta.jpg",
@@ -145,7 +100,7 @@ namespace LionDev
                 },
                 new Producto
                 {
-                    IdProducto = Guid.NewGuid(),
+                    IdProducto = Guid.Parse("17e15c41-cec7-4ed6-a393-d7e0198e93d1"),
                     Nombre = "Pantalón Guess",
                     Referencia = "PAE001",
                     UrlImagen = "images/amazon-essentials-pantalon.jpg",
@@ -161,7 +116,7 @@ namespace LionDev
                 },
                 new Producto
                 {
-                    IdProducto = Guid.NewGuid(),
+                    IdProducto = Guid.Parse("fba5415e-7d4b-42c7-8507-6665aaf257f5"),
                     Nombre = "Chaqueta JACK & JONES",
                     Referencia = "CJJ001",
                     UrlImagen = "images/jackjones.jpg",
@@ -176,7 +131,7 @@ namespace LionDev
                 },
                 new Producto
                 {
-                    IdProducto = Guid.NewGuid(),
+                    IdProducto = Guid.Parse("26f32682-a2d8-4388-82ce-c4bf421317ad"),
                     Nombre = "Camisa Kayhan Hombre",
                     Referencia = "CKH001",
                     UrlImagen = "images/kayhanman.jpg",
@@ -191,7 +146,7 @@ namespace LionDev
                 },
                 new Producto
                 {
-                    IdProducto = Guid.NewGuid(),
+                    IdProducto = Guid.Parse("52e996d1-cc5f-4552-a74c-48257860c171"),
                     Nombre = "Polo SPRINGFIELD",
                     Referencia = "PS001",
                     UrlImagen = "images/springfield.jpg",
@@ -206,7 +161,7 @@ namespace LionDev
                 },
                 new Producto
                 {
-                    IdProducto = Guid.NewGuid(),
+                    IdProducto = Guid.Parse("aa19593d-55f6-4380-a73a-1c48168d0b8d"),
                     Nombre = "Sudadera APOONABA",
                     Referencia = "SA001",
                     UrlImagen = "images/apoonaba.jpg",
