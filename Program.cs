@@ -88,7 +88,7 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 app.UseCors(options => options
-    .WithOrigins("http://localhost:4200", "https://localhost:4200")
+    .WithOrigins("http://localhost:4200")
     .AllowAnyMethod()
     .AllowAnyHeader());
 

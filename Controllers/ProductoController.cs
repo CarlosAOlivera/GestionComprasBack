@@ -72,5 +72,20 @@ namespace Backend.Controllers
         }
 
         // GET: Producto/GetByMarca/{marca}
+        [HttpGet]
+        [Route("api/Producto/GetByMarca/{marca}")]
+        public async Task<ActionResult<IEnumerable<Producto>>> GetByMarca(string marca)
+        {
+            var productos = await _context.Productos
+                                .Where(p => p.Marca.Nombre.Contains(marca))
+                                .ToListAsync();
+
+            if (!productos.Any())
+            {
+                return NotFound($"No hay productos de la marca especificada: {marca}.");
+            }
+
+            return productos;
+        }
     }
 }

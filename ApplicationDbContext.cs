@@ -63,7 +63,7 @@ namespace LionDev
             // Seeds para Usuario
             modelBuilder.Entity<Usuario>().HasData(
                 new Usuario { 
-                    IdUsuario = Guid.Parse("9b380e62 - 52f2 - 4fe6 - a0fc - 99664828f3af"), 
+                    IdUsuario = Guid.Parse("9b380e62-52f2-4fe6-a0fc-99664828f3af"), 
                     Nombres = "Radamel",
                     Apellidos = "Falcao",
                     CorreoElectronico = "rada@gmail.com",
@@ -72,7 +72,7 @@ namespace LionDev
                 },
                 new Usuario
                 {
-                    IdUsuario = Guid.Parse("72322d7a - a194 - 4cb1 - a43c - ef7f04d5ca1c"),
+                    IdUsuario = Guid.Parse("72322d7a-a194-4cb1-a43c-ef7f04d5ca1c"),
                     Nombres = "Carlos",
                     Apellidos = "Olivera",
                     CorreoElectronico = "carlos@gmail.com",
