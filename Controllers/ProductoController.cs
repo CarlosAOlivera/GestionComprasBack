@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Backend.Controllers
 {
-    [Route("api/[controller]")]
+
     [ApiController]
     public class ProductoController : ControllerBase
     {
@@ -20,9 +20,11 @@ namespace Backend.Controllers
         }
 
         // GET: api/Producto/GetByName/{name}
-        [HttpGet("GetByName/{name}")]
+        [HttpGet]
+        [Route("api/v1/Producto/{name}")]
         public async Task<ActionResult<IEnumerable<Producto>>> GetByName(string name)
         {
+            
             var productos = await _context.Productos
                             .Where(p => p.Nombre.Contains(name))
                             .ToListAsync();
@@ -36,7 +38,8 @@ namespace Backend.Controllers
         }
 
         // GET: api/Producto/GetMasBuscados
-        [HttpGet("GetMasBuscados")]
+        [HttpGet]
+        [Route("api/Producto/GetMasBuscados")]
         public async Task<ActionResult<IEnumerable<Producto>>> GetGetMasBuscados()
         {
             var productos = await _context.Productos
@@ -52,7 +55,8 @@ namespace Backend.Controllers
         }
 
         // GET: Producto/GetBySexo/{paraSexo}
-        [HttpGet("GetBySexo/{paraSexo}")]
+        [HttpGet]
+        [Route("api/Producto/GetBySexo/{paraSexo}")]
         public async Task<ActionResult<IEnumerable<Producto>>> GetBySexo(string paraSexo)
         {
             var productos = await _context.Productos

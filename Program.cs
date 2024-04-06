@@ -57,7 +57,7 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     });
 
 // Kestrel and HTTPS configuration
-builder.WebHost.ConfigureKestrel(serverOptions =>
+/*builder.WebHost.ConfigureKestrel(serverOptions =>
 {
     serverOptions.ListenLocalhost(5101, listenOptions =>
     {
@@ -74,7 +74,7 @@ builder.WebHost.ConfigureKestrel(serverOptions =>
             };
         });
     });
-});
+});*/
 
 var app = builder.Build();
 
