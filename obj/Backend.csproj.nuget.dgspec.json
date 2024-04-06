@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\carlo\\source\\repos\\ComprasBack\\GestionComprasBack\\Backend.csproj": {}
+    "C:\\dev\\GestionComprasBack\\Backend.csproj": {}
   },
   "projects": {
-    "C:\\Users\\carlo\\source\\repos\\ComprasBack\\GestionComprasBack\\Backend.csproj": {
+    "C:\\dev\\GestionComprasBack\\Backend.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\carlo\\source\\repos\\ComprasBack\\GestionComprasBack\\Backend.csproj",
+        "projectUniqueName": "C:\\dev\\GestionComprasBack\\Backend.csproj",
         "projectName": "Backend",
-        "projectPath": "C:\\Users\\carlo\\source\\repos\\ComprasBack\\GestionComprasBack\\Backend.csproj",
+        "projectPath": "C:\\dev\\GestionComprasBack\\Backend.csproj",
         "packagesPath": "C:\\Users\\carlo\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\carlo\\source\\repos\\ComprasBack\\GestionComprasBack\\obj\\",
+        "outputPath": "C:\\dev\\GestionComprasBack\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"

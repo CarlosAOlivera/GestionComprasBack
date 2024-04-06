@@ -57,7 +57,7 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     });
 
 // Kestrel and HTTPS configuration
-builder.WebHost.ConfigureKestrel(serverOptions =>
+/*builder.WebHost.ConfigureKestrel(serverOptions =>
 {
     serverOptions.ListenLocalhost(5101, listenOptions =>
     {
@@ -74,7 +74,7 @@ builder.WebHost.ConfigureKestrel(serverOptions =>
             };
         });
     });
-});
+});*/
 
 var app = builder.Build();
 
@@ -88,7 +88,7 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 app.UseCors(options => options
-    .WithOrigins("http://localhost:4200", "https://localhost:4200")
+    .WithOrigins("http://localhost:4200")
     .AllowAnyMethod()
     .AllowAnyHeader());
 
