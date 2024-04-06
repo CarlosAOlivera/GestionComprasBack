@@ -19,7 +19,7 @@ namespace Backend.Controllers
             _context = context;
         }
 
-        // GET: api/Producto/GetByName/{name}
+        // GET: api/v1/Producto/GetByName/{name}
         [HttpGet]
         [Route("api/v1/Producto/{name}")]
         public async Task<ActionResult<IEnumerable<Producto>>> GetByName(string name)
@@ -37,9 +37,9 @@ namespace Backend.Controllers
             return productos;
         }
 
-        // GET: api/Producto/GetMasBuscados
+        // GET: api/v1/Producto/GetMasBuscados
         [HttpGet]
-        [Route("api/Producto/GetMasBuscados")]
+        [Route("api/v1/Producto/GetMasBuscados")]
         public async Task<ActionResult<IEnumerable<Producto>>> GetGetMasBuscados()
         {
             var productos = await _context.Productos
@@ -54,9 +54,9 @@ namespace Backend.Controllers
             return productos;
         }
 
-        // GET: Producto/GetBySexo/{paraSexo}
+        // GET: api/v1/Producto/GetBySexo/{paraSexo}
         [HttpGet]
-        [Route("api/Producto/GetBySexo/{paraSexo}")]
+        [Route("api/v1/Producto/GetBySexo/{paraSexo}")]
         public async Task<ActionResult<IEnumerable<Producto>>> GetBySexo(string paraSexo)
         {
             var productos = await _context.Productos
@@ -71,9 +71,9 @@ namespace Backend.Controllers
             return productos;
         }
 
-        // GET: Producto/GetByMarca/{marca}
+        // GET: api/v1/Producto/GetByMarca/{marca}
         [HttpGet]
-        [Route("api/Producto/GetByMarca/{marca}")]
+        [Route("api/v1/Producto/GetByMarca/{marca}")]
         public async Task<ActionResult<IEnumerable<Producto>>> GetByMarca(string marca)
         {
             var productos = await _context.Productos
@@ -83,6 +83,23 @@ namespace Backend.Controllers
             if (!productos.Any())
             {
                 return NotFound($"No hay productos de la marca especificada: {marca}.");
+            }
+
+            return productos;
+        }
+
+        // GET: api/v1/Producto/GetByColor/{color}
+        [HttpGet]
+        [Route("api/v1/Producto/GetByColor/{color}")]
+        public async Task<ActionResult<IEnumerable<Producto>>> GetByColor(string color)
+        {
+            var productos = await _context.Productos
+                                .Where(p => p.Color != null && p.Color.Contains(color))
+                                .ToListAsync();
+
+            if (!productos.Any())
+            {
+                return NotFound($"No hay productos del color especificado: {color}.");
             }
 
             return productos;

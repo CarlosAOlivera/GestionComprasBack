@@ -25,7 +25,7 @@ builder.Services.AddSwaggerGen();
 // Entity Framework Core DbContext configuration
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
 {
-    var connectionString = builder.Configuration.GetConnectionString("YourConnectionStringName");
+    var connectionString = builder.Configuration.GetConnectionString("ConnectionString");
     options.UseSqlServer(connectionString);
 
     if (builder.Environment.IsDevelopment())

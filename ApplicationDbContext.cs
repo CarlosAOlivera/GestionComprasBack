@@ -36,30 +36,6 @@ namespace LionDev
             modelBuilder.Entity<ProductoColor>().HasKey(pc => new { pc.IdProducto, pc.IdColor });
             modelBuilder.Entity<ProductoTalla>().HasKey(pt => new { pt.IdProducto, pt.IdTalla });
 
-            modelBuilder.Entity<Producto>()
-                .HasOne(df => df.Marca)
-                .WithMany(f => f.Producto)
-                //.WithMany()
-                .HasForeignKey(df => df.IdMarca);
-
-            // Seeds para Marca
-            var levisId = Guid.Parse("b7db804a-509d-48c8-9512-4d4671c71fd1");
-            var guessId = Guid.Parse("07717305-31c4-40b5-958e-072a83e9e45f");
-            var jackJonesId = Guid.Parse("4254f250-dc80-4097-9015-2faf7fe12659");
-            var kayhanHombreId = Guid.Parse("dc06829b-e50b-4ae1-9695-818b3f9aeccd");
-            var springfieldId = Guid.Parse("fcf5bc09-867d-425a-88e9-b1e476fedb6c");
-            var apoonabaId = Guid.Parse("eaa1e975-861c-4c31-aee9-6c13277d4750");
-
-
-            modelBuilder.Entity<Marca>().HasData(
-                new Marca { IdMarca = levisId, Nombre = "LEVI’S" },
-                new Marca { IdMarca = guessId, Nombre = "AMAZON ESSENTIALS" },
-                new Marca { IdMarca = jackJonesId, Nombre = "JACK & JONES" },
-                new Marca { IdMarca = kayhanHombreId, Nombre = "KAYHAN" },
-                new Marca { IdMarca = springfieldId, Nombre = "SPRINGFIELD" },
-                new Marca { IdMarca = apoonabaId, Nombre = "APOONABA" }
-            );
-
             // Seeds para Usuario
             modelBuilder.Entity<Usuario>().HasData(
                 new Usuario { 
@@ -81,6 +57,31 @@ namespace LionDev
                 }
             );
 
+            
+            // Guids para Marca
+            var levisId = Guid.Parse("b7db804a-509d-48c8-9512-4d4671c71fd1");
+            var guessId = Guid.Parse("07717305-31c4-40b5-958e-072a83e9e45f");
+            var jackJonesId = Guid.Parse("4254f250-dc80-4097-9015-2faf7fe12659");
+            var kayhanHombreId = Guid.Parse("dc06829b-e50b-4ae1-9695-818b3f9aeccd");
+            var springfieldId = Guid.Parse("fcf5bc09-867d-425a-88e9-b1e476fedb6c");
+            var apoonabaId = Guid.Parse("eaa1e975-861c-4c31-aee9-6c13277d4750");
+
+            // Seeds para Marca
+            modelBuilder.Entity<Marca>().HasData(
+                new Marca { IdMarca = levisId, Nombre = "LEVI" },
+                new Marca { IdMarca = guessId, Nombre = "GUESS" },
+                new Marca { IdMarca = jackJonesId, Nombre = "JACK & JONES" },
+                new Marca { IdMarca = kayhanHombreId, Nombre = "KAYHAN" },
+                new Marca { IdMarca = springfieldId, Nombre = "SPRINGFIELD" },
+                new Marca { IdMarca = apoonabaId, Nombre = "APOONABA" }
+            );
+
+            // Relación entre Producto y Marca
+            modelBuilder.Entity<Producto>()
+                .HasOne(df => df.Marca)
+                .WithMany(f => f.Producto)
+                .HasForeignKey(df => df.IdMarca);
+
             // Seeds para Producto
             modelBuilder.Entity<Producto>().HasData(              
                 new Producto
@@ -89,14 +90,15 @@ namespace LionDev
                     Nombre = "Camiseta Levi's Original",
                     Referencia = "CL001",
                     UrlImagen = "images/levis-camiseta.jpg",
-                    Descripcion = "Camiseta clásica Levi’s",
+                    Descripcion = "Camiseta clásica Levi",
                     Color = "Azul",
                     Cantidad = 100,
                     Talla = "M",
                     Valor = 29900,
                     EsDeLosMasBuscados = false,
                     ParaSexo = "Masculino",
-                    IdMarca = levisId
+                    //IdMarca = levisId
+                    IdMarca = Guid.Parse("b7db804a-509d-48c8-9512-4d4671c71fd1")
                 },
                 new Producto
                 {
@@ -104,14 +106,15 @@ namespace LionDev
                     Nombre = "Pantalón Guess",
                     Referencia = "PAE001",
                     UrlImagen = "images/amazon-essentials-pantalon.jpg",
-                    Descripcion = "Pantalón cómodo Amazon Essentials",
+                    Descripcion = "Pantalón cómodo Guess",
                     Color = "Negro",
                     Cantidad = 50,
                     Talla = "L",
                     Valor = 45900,
                     EsDeLosMasBuscados = true,
                     ParaSexo = "Femenino",
-                    IdMarca = guessId
+                    //IdMarca = guessId
+                    IdMarca = Guid.Parse("07717305-31c4-40b5-958e-072a83e9e45f")
 
                 },
                 new Producto
@@ -127,7 +130,8 @@ namespace LionDev
                     Valor = 75000,
                     EsDeLosMasBuscados = false,
                     ParaSexo = "Masculino",
-                    IdMarca = jackJonesId
+                    //IdMarca = jackJonesId
+                    IdMarca = Guid.Parse("4254f250-dc80-4097-9015-2faf7fe12659")
                 },
                 new Producto
                 {
@@ -142,7 +146,8 @@ namespace LionDev
                     Valor = 60000,
                     EsDeLosMasBuscados = false,
                     ParaSexo = "Masculino",
-                    IdMarca = kayhanHombreId
+                    //IdMarca = kayhanHombreId
+                    IdMarca = Guid.Parse("dc06829b-e50b-4ae1-9695-818b3f9aeccd")
                 },
                 new Producto
                 {
@@ -157,7 +162,8 @@ namespace LionDev
                     Valor = 45000,
                     EsDeLosMasBuscados = false,
                     ParaSexo = "Masculino",
-                    IdMarca = springfieldId
+                    //IdMarca = springfieldId
+                    IdMarca = Guid.Parse("fcf5bc09-867d-425a-88e9-b1e476fedb6c")
                 },
                 new Producto
                 {
@@ -172,7 +178,8 @@ namespace LionDev
                     Valor = 65000,
                     EsDeLosMasBuscados = true,
                     ParaSexo = "Unisex",
-                    IdMarca = apoonabaId
+                    //IdMarca = apoonabaId
+                    IdMarca = Guid.Parse("eaa1e975-861c-4c31-aee9-6c13277d4750")
                 }
 
             );
