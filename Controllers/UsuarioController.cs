@@ -31,6 +31,7 @@ namespace Backend.Controllers
             _context = context;
         }
 
+
         [HttpPost]
         [Route("Login")]
         public dynamic Login([FromBody] Object optData)
@@ -160,6 +161,7 @@ namespace Backend.Controllers
             return new JwtSecurityTokenHandler().WriteToken(token);
         }*/
 
+
         // GET: Usuario/Usuarios
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Usuario>>> GetUsuarios()
@@ -179,6 +181,17 @@ namespace Backend.Controllers
             }
 
             return Usuario;
+        }
+
+        [HttpGet]
+        [Route("check-email")]
+        public async Task<ActionResult<bool>> CheckEmail([FromQuery] string email)
+        {
+            var usuario = await _context.Usuarios
+                .AsNoTracking()
+                .SingleOrDefaultAsync(u => u.CorreoElectronico == email);
+
+            return usuario != null;
         }
 
         // POST: Usuario/Guardar
