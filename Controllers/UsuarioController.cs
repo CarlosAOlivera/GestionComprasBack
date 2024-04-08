@@ -209,7 +209,7 @@ namespace Backend.Controllers
                 _context.Usuarios.Add(usuario);
                 await _context.SaveChangesAsync();
 
-                usuario.Contrasena = null;
+                usuario.Contrasena = string.Empty;
 
                 return CreatedAtAction(nameof(GetUsuario), new { id = usuario.IdUsuario }, usuario);
             }
