@@ -60,8 +60,8 @@ namespace Backend.Controllers
         public async Task<ActionResult<IEnumerable<Producto>>> GetBySexo(string paraSexo)
         {
             var productos = await _context.Productos
-                                .Where(p => p.ParaSexo.Equals(paraSexo, StringComparison.OrdinalIgnoreCase))
-                                .ToListAsync();
+                    .Where(p => p.ParaSexo.ToLower() == paraSexo.ToLower())
+                    .ToListAsync();
 
             if (!productos.Any())
             {
@@ -77,8 +77,8 @@ namespace Backend.Controllers
         public async Task<ActionResult<IEnumerable<Producto>>> GetByMarca(string marca)
         {
             var productos = await _context.Productos
-                                .Where(p => p.Marca.Nombre.Contains(marca))
-                                .ToListAsync();
+                    .Where(p => p.Marca != null && p.Marca.Nombre.ToLower().Contains(marca.ToLower()))
+                    .ToListAsync();
 
             if (!productos.Any())
             {

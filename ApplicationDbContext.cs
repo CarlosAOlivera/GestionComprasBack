@@ -59,21 +59,11 @@ namespace LionDev
 
             
             // Guids para Marca
-            var levisId = Guid.Parse("b7db804a-509d-48c8-9512-4d4671c71fd1");
-            var guessId = Guid.Parse("07717305-31c4-40b5-958e-072a83e9e45f");
-            var jackJonesId = Guid.Parse("4254f250-dc80-4097-9015-2faf7fe12659");
-            var kayhanHombreId = Guid.Parse("dc06829b-e50b-4ae1-9695-818b3f9aeccd");
-            var springfieldId = Guid.Parse("fcf5bc09-867d-425a-88e9-b1e476fedb6c");
-            var apoonabaId = Guid.Parse("eaa1e975-861c-4c31-aee9-6c13277d4750");
+            var fashionNovaXId = Guid.Parse("b7db804a-509d-48c8-9512-4d4671c71fd1");
 
             // Seeds para Marca
             modelBuilder.Entity<Marca>().HasData(
-                new Marca { IdMarca = levisId, Nombre = "LEVI" },
-                new Marca { IdMarca = guessId, Nombre = "GUESS" },
-                new Marca { IdMarca = jackJonesId, Nombre = "JACK & JONES" },
-                new Marca { IdMarca = kayhanHombreId, Nombre = "KAYHAN" },
-                new Marca { IdMarca = springfieldId, Nombre = "SPRINGFIELD" },
-                new Marca { IdMarca = apoonabaId, Nombre = "APOONABA" }
+                new Marca { IdMarca = fashionNovaXId, Nombre = "FASHION NOVA X" }
             );
 
             // Relación entre Producto y Marca
@@ -87,99 +77,93 @@ namespace LionDev
                 new Producto
                 {
                     IdProducto = Guid.Parse("2d98ccdb-9393-4d36-998b-7b1ad994e8e0"),
-                    Nombre = "Camiseta Levi's Original",
+                    Nombre = "Camisa de vestir negra con rayas sutiles",
                     Referencia = "CL001",
-                    UrlImagen = "images/levis-camiseta.jpg",
-                    Descripcion = "Camiseta clásica Levi",
-                    Color = "Azul",
+                    UrlImagen = "https://1drv.ms/i/s!Aq7Lcrt8Mtbfpj0mjV27AORratnF?e=fqKpgO",
+                    Descripcion = "Distintiva y elegante, esta camisa de vestir negra cuenta con un diseño de rayas sutiles que le añade textura y profundidad. Las rayas finas complementan el color negro, mientras que el corte y estilo clásicos aseguran versatilidad para cualquier ocasión formal.",
+                    Color = "Negro",
                     Cantidad = 100,
                     Talla = "M",
-                    Valor = 29900,
+                    Valor = 25,
                     EsDeLosMasBuscados = false,
                     ParaSexo = "Masculino",
-                    //IdMarca = levisId
                     IdMarca = Guid.Parse("b7db804a-509d-48c8-9512-4d4671c71fd1")
                 },
                 new Producto
                 {
                     IdProducto = Guid.Parse("17e15c41-cec7-4ed6-a393-d7e0198e93d1"),
-                    Nombre = "Pantalón Guess",
+                    Nombre = "Camisa casual negra para mujer",
                     Referencia = "PAE001",
-                    UrlImagen = "images/amazon-essentials-pantalon.jpg",
-                    Descripcion = "Pantalón cómodo Guess",
+                    UrlImagen = "https://1drv.ms/i/s!Aq7Lcrt8MtbfpkCS4J54_owfge8W?e=E5cCWw",
+                    Descripcion = "Esta camisa negra para mujer combina comodidad y estilo con su corte relajado y femenino. El tejido suave y fluido asegura una caída elegante, ideal para un atuendo chic y cómodo. El color negro profundo proporciona una base versátil y sofisticada para diversos looks.",
                     Color = "Negro",
                     Cantidad = 50,
                     Talla = "L",
-                    Valor = 45900,
+                    Valor = 30,
                     EsDeLosMasBuscados = true,
                     ParaSexo = "Femenino",
-                    //IdMarca = guessId
-                    IdMarca = Guid.Parse("07717305-31c4-40b5-958e-072a83e9e45f")
+                    IdMarca = Guid.Parse("b7db804a-509d-48c8-9512-4d4671c71fd1")
 
                 },
                 new Producto
                 {
                     IdProducto = Guid.Parse("fba5415e-7d4b-42c7-8507-6665aaf257f5"),
-                    Nombre = "Chaqueta JACK & JONES",
+                    Nombre = "Camisa de denim verde para mujer",
                     Referencia = "CJJ001",
-                    UrlImagen = "images/jackjones.jpg",
-                    Descripcion = "Chaqueta moderna JACK & JONES en negro",
-                    Color = "Negro",
+                    UrlImagen = "https://1drv.ms/i/s!Aq7Lcrt8Mtbfpi4bbUEdiChClAsk?e=J0gbK1",
+                    Descripcion = "Esta camisa de denim para mujer en un tono verde terroso combina estilo y practicidad. Con un diseño entallado, cuello definido, botones frontales y bolsillos en el pecho, ofrece una mezcla perfecta de moda y funcionalidad. El tejido de denim duradero y el color verde rico proporcionan un look contemporáneo y chic.",
+                    Color = "Verde",
                     Cantidad = 70,
                     Talla = "L",
-                    Valor = 75000,
+                    Valor = 34,
                     EsDeLosMasBuscados = false,
-                    ParaSexo = "Masculino",
-                    //IdMarca = jackJonesId
-                    IdMarca = Guid.Parse("4254f250-dc80-4097-9015-2faf7fe12659")
+                    ParaSexo = "Femenino",
+                    IdMarca = Guid.Parse("b7db804a-509d-48c8-9512-4d4671c71fd1")
                 },
                 new Producto
                 {
                     IdProducto = Guid.Parse("26f32682-a2d8-4388-82ce-c4bf421317ad"),
-                    Nombre = "Camisa Kayhan Hombre",
+                    Nombre = "Camisa de denim azul para hombre",
                     Referencia = "CKH001",
-                    UrlImagen = "images/kayhanman.jpg",
-                    Descripcion = "Camisa elegante Kayhan en blanco",
-                    Color = "Blanco",
+                    UrlImagen = "https://1drv.ms/i/s!Aq7Lcrt8MtbfpjSYxXw65EDf-FH_?e=gsaGkp",
+                    Descripcion = "Representando la esencia del vestuario masculino, esta camisa de denim azul ofrece un ajuste clásico con cuello resistente, botones frontales y bolsillos en el pecho. El color azul profundo y el tejido de denim robusto la convierten en una opción durable y siempre en estilo para el hombre moderno.",
+                    Color = "Azul",
                     Cantidad = 60,
                     Talla = "M",
-                    Valor = 60000,
+                    Valor = 36,
                     EsDeLosMasBuscados = false,
                     ParaSexo = "Masculino",
-                    //IdMarca = kayhanHombreId
-                    IdMarca = Guid.Parse("dc06829b-e50b-4ae1-9695-818b3f9aeccd")
+                    IdMarca = Guid.Parse("b7db804a-509d-48c8-9512-4d4671c71fd1")
                 },
                 new Producto
                 {
                     IdProducto = Guid.Parse("52e996d1-cc5f-4552-a74c-48257860c171"),
-                    Nombre = "Polo SPRINGFIELD",
+                    Nombre = "Polo azul para hombre",
                     Referencia = "PS001",
-                    UrlImagen = "images/springfield.jpg",
-                    Descripcion = "Polo casual SPRINGFIELD en verde",
-                    Color = "Verde",
+                    UrlImagen = "https://1drv.ms/i/s!Aq7Lcrt8Mtbfpi9NCvaItrYntnUW?e=3mn8YK",
+                    Descripcion = "Esta camisa polo azul para hombre destaca por su tejido piqué suave y transpirable, ofreciendo un ajuste clásico con cuello y placa de botones. El color azul profundo y el diseño elegante la hacen perfecta para ocasiones casuales o semi-formales, reflejando un estilo deportivo y refinado.",
+                    Color = "Azul",
                     Cantidad = 80,
                     Talla = "S",
-                    Valor = 45000,
+                    Valor = 45,
                     EsDeLosMasBuscados = false,
                     ParaSexo = "Masculino",
-                    //IdMarca = springfieldId
-                    IdMarca = Guid.Parse("fcf5bc09-867d-425a-88e9-b1e476fedb6c")
+                    IdMarca = Guid.Parse("b7db804a-509d-48c8-9512-4d4671c71fd1")
                 },
                 new Producto
                 {
                     IdProducto = Guid.Parse("aa19593d-55f6-4380-a73a-1c48168d0b8d"),
-                    Nombre = "Sudadera APOONABA",
+                    Nombre = "Polo verde para mujer",
                     Referencia = "SA001",
-                    UrlImagen = "images/apoonaba.jpg",
-                    Descripcion = "Sudadera APOONABA confortable en gris",
-                    Color = "Gris",
+                    UrlImagen = "https://1drv.ms/i/s!Aq7Lcrt8MtbfpkL_drp6tX5BfRmN?e=GDLN5j",
+                    Descripcion = "Esta camisa polo para mujer en un tono verde vibrante cuenta con un ajuste a medida, cuello elegante y placa de botones. Fabricada en tejido piqué suave y transpirable, combina elegancia con funcionalidad, ideal para llevar en actividades activas o como parte de un atuendo casual elegante.",
+                    Color = "Verde",
                     Cantidad = 90,
                     Talla = "XL",
-                    Valor = 65000,
+                    Valor = 43,
                     EsDeLosMasBuscados = true,
-                    ParaSexo = "Unisex",
-                    //IdMarca = apoonabaId
-                    IdMarca = Guid.Parse("eaa1e975-861c-4c31-aee9-6c13277d4750")
+                    ParaSexo = "Femenino",
+                    IdMarca = Guid.Parse("b7db804a-509d-48c8-9512-4d4671c71fd1")
                 }
 
             );
