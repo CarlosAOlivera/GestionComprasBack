@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 namespace Backend.Controllers
 {
     [ApiController]
-    [Route("Usuario")]
+    [Route("api/[controller]")]
 
     //public class LoginDto
     /*{
