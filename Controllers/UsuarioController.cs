@@ -35,103 +35,75 @@ namespace Backend.Controllers
         [HttpPost]
         [Route("Login")]
         public dynamic Login([FromBody] Object optData)
-
-        //public async Task<IActionResult> Login([FromBody] LoginDto loginDto)
         {
-            var data = JsonConvert.DeserializeObject<dynamic>(optData.ToString());            
+            var data = JsonConvert.DeserializeObject<dynamic>(optData.ToString());
             string correo = data.CorreoElectronico.ToString();
             string contrasena = data.Contrasena.ToString();
 
-
             try
             {
-                /*var usuario = await _context.Usuarios
-                    .AsNoTracking()
-                    .SingleOrDefaultAsync(u => u.CorreoElectronico == loginDto.CorreoElectronico);
+                var usuario = _context.Usuarios
+                    .FirstOrDefault(u => u.CorreoElectronico == correo);
 
                 if (usuario == null)
                 {
-                    return BadRequest(new { success = false, message = "Credenciales incorrectas" });
-                }
-
-                var hasher = new PasswordHasher<Usuario>();
-                var verificationResult = hasher.VerifyHashedPassword(usuario, usuario.Contrasena, loginDto.Contrasena);
-
-                if (verificationResult == PasswordVerificationResult.Failed)
-                {
-                    return BadRequest(new { success = false, message = "Credenciales incorrectas" });
-                }*/
-
-                Usuario Usuario = _context.Usuarios
-                    .Where(x => x.CorreoElectronico == correo && x.Contrasena == contrasena)
-                    .FirstOrDefault();
-
-                if (Usuario == null)
-                {
-                    /*var result = hasher.VerifyHashedPassword(usuario, usuario.Contrasena, contrasena);
-
-                    if (result == PasswordVerificationResult.Failed)
-                    {
-                        return new
-                        {
-                            success = false,
-                            message = "Credenciales incorrectas",
-                            result = ""
-                        };
-                    }*/
-
                     return new
                     {
                         success = false,
-                        message = "Credenciales incorrectas",
-                        reult = ""
+                        message = "Usuario no registrado"
                     };
                 }
-                    var jwt = _configuration.GetSection("Jwt")
-                    .Get<Jwt>();
 
-                    var claims = new[]
-                    {
-                    new Claim(JwtRegisteredClaimNames.Sub, jwt.Subject),
-                    new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-                    new Claim(JwtRegisteredClaimNames.Iat, DateTime.UtcNow.ToString()),
-                    new Claim("id", Usuario.IdUsuario.ToString()),
-                    new Claim("correo", Usuario.CorreoElectronico)
-                };
+                var hasher = new PasswordHasher<Usuario>();
+                var result = hasher.VerifyHashedPassword(usuario, usuario.Contrasena, contrasena);
 
-                    var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwt.Key));
-                    var singIng = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
-
-                    var token = new JwtSecurityToken(
-                            jwt.Issuer,
-                            jwt.Audience,
-                            claims,
-                            expires: DateTime.Now.AddMinutes(60),
-                            signingCredentials: singIng
-                    );
-
+                if (result != PasswordVerificationResult.Success)
+                {
                     return new
                     {
-                        success = true,
-                        message = "exito",
-                        result = new JwtSecurityTokenHandler().WriteToken(token)
+                        success = false,
+                        message = "Credenciales incorrectas"
                     };
+                }
 
+                var jwt = _configuration.GetSection("Jwt")
+                    .Get<Jwt>();
 
-                    /*var jwtToken = GenerateJwtToken(usuario);
+                var claims = new[]
+                {
+            new Claim(JwtRegisteredClaimNames.Sub, jwt.Subject),
+            new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+            new Claim(JwtRegisteredClaimNames.Iat, DateTime.UtcNow.ToString()),
+            new Claim("id", usuario.IdUsuario.ToString()),
+            new Claim("correo", usuario.CorreoElectronico)
+        };
 
-                    return Ok(new
-                    {
-                        success = true,
-                        message = "Éxito",
-                        token = jwtToken
-                    });*/
+                var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwt.Key));
+                var singIng = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+
+                var token = new JwtSecurityToken(
+                        jwt.Issuer,
+                        jwt.Audience,
+                        claims,
+                        expires: DateTime.Now.AddMinutes(60),
+                        signingCredentials: singIng
+                );
+
+                return new
+                {
+                    success = true,
+                    message = "Login exitoso",
+                    result = new JwtSecurityTokenHandler().WriteToken(token)
+                };
             }
             catch (Exception ex)
             {
-                return StatusCode(500, "An error occurred while processing your request.");
+                return StatusCode(500, "Ocurrió un error al procesar la solicitud.");
             }
         }
+
+    }
+}
     
         /*private string GenerateJwtToken(Usuario usuario)
         {
