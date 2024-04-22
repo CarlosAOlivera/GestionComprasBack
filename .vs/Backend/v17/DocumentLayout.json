@@ -3,8 +3,24 @@
   "WorkspaceRootPath": "C:\\dev\\GestionComprasBack\\",
   "Documents": [
     {
+      "AbsoluteMoniker": "D:0:0:{D783B926-B43C-456B-A055-C4965A877ED1}|Backend.csproj|c:\\dev\\gestioncomprasback\\models\\sendgridsettings.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{D783B926-B43C-456B-A055-C4965A877ED1}|Backend.csproj|solutionrelative:models\\sendgridsettings.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{D783B926-B43C-456B-A055-C4965A877ED1}|Backend.csproj|c:\\dev\\gestioncomprasback\\models\\iemailservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{D783B926-B43C-456B-A055-C4965A877ED1}|Backend.csproj|solutionrelative:models\\iemailservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{D783B926-B43C-456B-A055-C4965A877ED1}|Backend.csproj|c:\\dev\\gestioncomprasback\\models\\sendgridemailservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{D783B926-B43C-456B-A055-C4965A877ED1}|Backend.csproj|solutionrelative:models\\sendgridemailservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{D783B926-B43C-456B-A055-C4965A877ED1}|Backend.csproj|c:\\dev\\gestioncomprasback\\controllers\\usuariocontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{D783B926-B43C-456B-A055-C4965A877ED1}|Backend.csproj|solutionrelative:controllers\\usuariocontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{D783B926-B43C-456B-A055-C4965A877ED1}|Backend.csproj|c:\\dev\\gestioncomprasback\\models\\usuario.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{D783B926-B43C-456B-A055-C4965A877ED1}|Backend.csproj|solutionrelative:models\\usuario.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{D783B926-B43C-456B-A055-C4965A877ED1}|Backend.csproj|c:\\dev\\gestioncomprasback\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -15,8 +31,8 @@
       "RelativeMoniker": "D:0:0:{D783B926-B43C-456B-A055-C4965A877ED1}|Backend.csproj|solutionrelative:controllers\\productocontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{D783B926-B43C-456B-A055-C4965A877ED1}|Backend.csproj|c:\\dev\\gestioncomprasback\\applicationdbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{D783B926-B43C-456B-A055-C4965A877ED1}|Backend.csproj|solutionrelative:applicationdbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{D783B926-B43C-456B-A055-C4965A877ED1}|Backend.csproj|c:\\dev\\gestioncomprasback\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
+      "RelativeMoniker": "D:0:0:{D783B926-B43C-456B-A055-C4965A877ED1}|Backend.csproj|solutionrelative:appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
     }
   ],
   "DocumentGroupContainers": [
@@ -26,8 +42,22 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 2,
+          "SelectedChildIndex": 0,
           "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "SendGridSettings.cs",
+              "DocumentMoniker": "C:\\dev\\GestionComprasBack\\Models\\SendGridSettings.cs",
+              "RelativeDocumentMoniker": "Models\\SendGridSettings.cs",
+              "ToolTip": "C:\\dev\\GestionComprasBack\\Models\\SendGridSettings.cs",
+              "RelativeToolTip": "Models\\SendGridSettings.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAQAAAAcAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-04-10T17:38:01.339Z",
+              "IsPinned": true,
+              "EditorCaption": ""
+            },
             {
               "$type": "Bookmark",
               "Name": "ST:128:0:{1fc202d4-d401-403c-9834-5b218574bb67}"
@@ -37,55 +67,99 @@
               "Name": "ST:128:0:{116d2292-e37d-41cd-a077-ebacac4c8cc4}"
             },
             {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{d78612c7-9962-4b83-95d9-268046dad23a}"
+            },
+            {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 4,
+              "Title": "Usuario.cs",
+              "DocumentMoniker": "C:\\dev\\GestionComprasBack\\Models\\Usuario.cs",
+              "RelativeDocumentMoniker": "Models\\Usuario.cs",
+              "ToolTip": "C:\\dev\\GestionComprasBack\\Models\\Usuario.cs",
+              "RelativeToolTip": "Models\\Usuario.cs",
+              "ViewState": "AQIAAAgAAAAAAAAAAADwvxwAAAASAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-04-18T03:15:42.15Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "SendGridEmailService.cs",
+              "DocumentMoniker": "C:\\dev\\GestionComprasBack\\Models\\SendGridEmailService.cs",
+              "RelativeDocumentMoniker": "Models\\SendGridEmailService.cs",
+              "ToolTip": "C:\\dev\\GestionComprasBack\\Models\\SendGridEmailService.cs",
+              "RelativeToolTip": "Models\\SendGridEmailService.cs",
+              "ViewState": "AQIAAAEAAAAAAAAAAAAuwB4AAAAZAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-04-10T17:23:54.564Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
               "Title": "UsuarioController.cs",
               "DocumentMoniker": "C:\\dev\\GestionComprasBack\\Controllers\\UsuarioController.cs",
               "RelativeDocumentMoniker": "Controllers\\UsuarioController.cs",
               "ToolTip": "C:\\dev\\GestionComprasBack\\Controllers\\UsuarioController.cs",
               "RelativeToolTip": "Controllers\\UsuarioController.cs",
-              "ViewState": "AQIAALUAAAAAAAAAAAAuwMYAAAAQAAAA",
+              "ViewState": "AQIAAIkAAAAAAAAAAAAAwKAAAABGAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-04-09T23:41:13.751Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 6,
               "Title": "ProductoController.cs",
               "DocumentMoniker": "C:\\dev\\GestionComprasBack\\Controllers\\ProductoController.cs",
               "RelativeDocumentMoniker": "Controllers\\ProductoController.cs",
               "ToolTip": "C:\\dev\\GestionComprasBack\\Controllers\\ProductoController.cs",
               "RelativeToolTip": "Controllers\\ProductoController.cs",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAACkAAAAfAAAA",
+              "ViewState": "AQIAABYAAAAAAAAAAIBQwGwAAAAAAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-04-10T00:07:54.941Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 5,
               "Title": "Program.cs",
               "DocumentMoniker": "C:\\dev\\GestionComprasBack\\Program.cs",
               "RelativeDocumentMoniker": "Program.cs",
               "ToolTip": "C:\\dev\\GestionComprasBack\\Program.cs",
               "RelativeToolTip": "Program.cs",
-              "ViewState": "AQIAAEwAAAAAAAAAAAASwGEAAAAAAAAA",
+              "ViewState": "AQIAAC4AAAAAAAAAAAAAAEEAAAAAAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-04-06T14:39:53.538Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
-              "Title": "ApplicationDbContext.cs",
-              "DocumentMoniker": "C:\\dev\\GestionComprasBack\\ApplicationDbContext.cs",
-              "RelativeDocumentMoniker": "ApplicationDbContext.cs",
-              "ToolTip": "C:\\dev\\GestionComprasBack\\ApplicationDbContext.cs",
-              "RelativeToolTip": "ApplicationDbContext.cs",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAAEEAAAA1AAAA",
+              "DocumentIndex": 7,
+              "Title": "appsettings.json",
+              "DocumentMoniker": "C:\\dev\\GestionComprasBack\\appsettings.json",
+              "RelativeDocumentMoniker": "appsettings.json",
+              "ToolTip": "C:\\dev\\GestionComprasBack\\appsettings.json",
+              "RelativeToolTip": "appsettings.json",
+              "ViewState": "AQIAAAAAAAAAAAAAAIBJwBEAAAAiAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
+              "WhenOpened": "2024-04-10T16:52:59.407Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "IEmailService.cs",
+              "DocumentMoniker": "C:\\dev\\GestionComprasBack\\Models\\IEmailService.cs",
+              "RelativeDocumentMoniker": "Models\\IEmailService.cs",
+              "ToolTip": "C:\\dev\\GestionComprasBack\\Models\\IEmailService.cs",
+              "RelativeToolTip": "Models\\IEmailService.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-04-01T21:07:41.183Z"
+              "WhenOpened": "2024-04-10T17:39:23.334Z",
+              "EditorCaption": ""
             }
           ]
         }

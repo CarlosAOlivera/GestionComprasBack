@@ -12,6 +12,10 @@ using System.Text;
 using System.Security.Cryptography.X509Certificates;
 using LionDev;
 using System.Linq;
+using LionDev.Models;
+using LionDev.Services;
+using LionDev.Configurations;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -21,6 +25,8 @@ builder.Services.AddControllers().AddJsonOptions(x =>
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.Configure<SendGridSettings>(builder.Configuration.GetSection("SendGrid"));
+builder.Services.AddTransient<IEmailService, SendGridEmailService>();
 
 // Entity Framework Core DbContext configuration
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
@@ -56,25 +62,12 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
         };
     });
 
-// Kestrel and HTTPS configuration
-/*builder.WebHost.ConfigureKestrel(serverOptions =>
+builder.Services.Configure<SendGridSettings>(builder.Configuration.GetSection("SendGrid"));
+
+builder.Services.PostConfigure<SendGridSettings>(options =>
 {
-    serverOptions.ListenLocalhost(5101, listenOptions =>
-    {
-        listenOptions.UseHttps(httpsOptions =>
-        {
-            httpsOptions.ServerCertificateSelector = (context, name) =>
-            {
-                using (var store = new X509Store(StoreName.My, StoreLocation.LocalMachine))
-                {
-                    store.Open(OpenFlags.ReadOnly);
-                    var certCollection = store.Certificates.Find(X509FindType.FindByThumbprint, "YOUR_CERT_THUMBPRINT", false);
-                    return certCollection.OfType<X509Certificate2>().FirstOrDefault();
-                }
-            };
-        });
-    });
-});*/
+    options.ApiKey = Environment.GetEnvironmentVariable("SENDGRID_API_KEY") ?? options.ApiKey;
+});
 
 var app = builder.Build();
 
