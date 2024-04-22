@@ -1,5 +1,6 @@
 ﻿using LionDev;
 using LionDev.Models;
+using LionDev.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -15,20 +16,17 @@ namespace Backend.Controllers
     [ApiController]
     [Route("api/[controller]")]
 
-    //public class LoginDto
-    /*{
-        public string CorreoElectronico { get; set; }
-        public string Contrasena { get; set; }
-    }*/
     public class UsuarioController : ControllerBase
     {
         public IConfiguration _configuration;
         private ApplicationDbContext _context;
+        private IEmailService _emailService;
 
-        public UsuarioController(IConfiguration configuration, ApplicationDbContext context)
+        public UsuarioController(IConfiguration configuration, ApplicationDbContext context, IEmailService emailService)
         {
             _configuration = configuration;
             _context = context;
+            _emailService = emailService;
         }
 
 
@@ -38,128 +36,73 @@ namespace Backend.Controllers
 
         //public async Task<IActionResult> Login([FromBody] LoginDto loginDto)
         {
-            var data = JsonConvert.DeserializeObject<dynamic>(optData.ToString());            
+            var data = JsonConvert.DeserializeObject<dynamic>(optData.ToString());
             string correo = data.CorreoElectronico.ToString();
             string contrasena = data.Contrasena.ToString();
 
 
             try
             {
-                /*var usuario = await _context.Usuarios
-                    .AsNoTracking()
-                    .SingleOrDefaultAsync(u => u.CorreoElectronico == loginDto.CorreoElectronico);
+                var usuario = _context.Usuarios
+                    .FirstOrDefault(u => u.CorreoElectronico == correo);
 
                 if (usuario == null)
                 {
-                    return BadRequest(new { success = false, message = "Credenciales incorrectas" });
-                }
-
-                var hasher = new PasswordHasher<Usuario>();
-                var verificationResult = hasher.VerifyHashedPassword(usuario, usuario.Contrasena, loginDto.Contrasena);
-
-                if (verificationResult == PasswordVerificationResult.Failed)
-                {
-                    return BadRequest(new { success = false, message = "Credenciales incorrectas" });
-                }*/
-
-                Usuario Usuario = _context.Usuarios
-                    .Where(x => x.CorreoElectronico == correo && x.Contrasena == contrasena)
-                    .FirstOrDefault();
-
-                if (Usuario == null)
-                {
-                    /*var result = hasher.VerifyHashedPassword(usuario, usuario.Contrasena, contrasena);
-
-                    if (result == PasswordVerificationResult.Failed)
-                    {
-                        return new
-                        {
-                            success = false,
-                            message = "Credenciales incorrectas",
-                            result = ""
-                        };
-                    }*/
-
                     return new
                     {
                         success = false,
-                        message = "Credenciales incorrectas",
-                        reult = ""
+                        message = "Usuario no registrado"
                     };
                 }
-                    var jwt = _configuration.GetSection("Jwt")
-                    .Get<Jwt>();
 
-                    var claims = new[]
+                var hasher = new PasswordHasher<Usuario>();
+                var result = hasher.VerifyHashedPassword(usuario, usuario.Contrasena, contrasena);
+
+                if (result != PasswordVerificationResult.Success)
+                {
+                    return new
                     {
+                        success = false,
+                        message = "Credenciales incorrectas"
+                    };
+                }
+
+                var jwt = _configuration.GetSection("Jwt")
+                .Get<Jwt>();
+
+                var claims = new[]
+                {
                     new Claim(JwtRegisteredClaimNames.Sub, jwt.Subject),
                     new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
                     new Claim(JwtRegisteredClaimNames.Iat, DateTime.UtcNow.ToString()),
-                    new Claim("id", Usuario.IdUsuario.ToString()),
-                    new Claim("correo", Usuario.CorreoElectronico)
+                    new Claim("id", usuario.IdUsuario.ToString()),
+                    new Claim("correo", usuario.CorreoElectronico)
                 };
 
-                    var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwt.Key));
-                    var singIng = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+                var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwt.Key));
+                var singIng = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
-                    var token = new JwtSecurityToken(
-                            jwt.Issuer,
-                            jwt.Audience,
-                            claims,
-                            expires: DateTime.Now.AddMinutes(60),
-                            signingCredentials: singIng
-                    );
+                var token = new JwtSecurityToken(
+                        jwt.Issuer,
+                        jwt.Audience,
+                        claims,
+                        expires: DateTime.Now.AddMinutes(60),
+                        signingCredentials: singIng
+                );
 
-                    return new
-                    {
-                        success = true,
-                        message = "exito",
-                        result = new JwtSecurityTokenHandler().WriteToken(token)
-                    };
+                return new
+                {
+                    success = true,
+                    message = "Login exitoso",
+                    result = new JwtSecurityTokenHandler().WriteToken(token)
+                };
 
-
-                    /*var jwtToken = GenerateJwtToken(usuario);
-
-                    return Ok(new
-                    {
-                        success = true,
-                        message = "Éxito",
-                        token = jwtToken
-                    });*/
             }
             catch (Exception ex)
             {
-                return StatusCode(500, "An error occurred while processing your request.");
+                return StatusCode(500, "Ocurrió un error al procesar la solicitud.");
             }
         }
-    
-        /*private string GenerateJwtToken(Usuario usuario)
-        {
-            var jwt = _configuration.GetSection("Jwt")
-               .Get<Jwt>();
-
-            var claims = new List<Claim>
-            {
-                new Claim(JwtRegisteredClaimNames.Sub, jwtSetting.Subject),
-                new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-                new Claim(JwtRegisteredClaimNames.Iat, DateTime.UtcNow.ToString("yyyy-MM-dd HH:mm:ss")),                    
-                new Claim("id", usuario.IdUsuario.ToString()),
-                new Claim("correo", usuario.CorreoElectronico)
-            };
-
-            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwt.Key));
-            var singIngCred = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
-
-            var token = new JwtSecurityToken(
-                    issuer: jwtSettings.Issuer,
-                    audience: jwtSettings.Audience,
-                    claims: claims,
-                    expires: DateTime.UtcNow.AddMinutes(60),
-                    signingCredentials: singIngCred
-            );
-
-            return new JwtSecurityTokenHandler().WriteToken(token);
-        }*/
 
 
         // GET: Usuario/Usuarios
@@ -204,18 +147,44 @@ namespace Backend.Controllers
                 usuario.IdUsuario = Guid.NewGuid();
 
                 var hasher = new PasswordHasher<Usuario>();
+
                 usuario.Contrasena = hasher.HashPassword(usuario, usuario.Contrasena);
+                
+                usuario.EmailConfirmado = false;
 
-                _context.Usuarios.Add(usuario);
-                await _context.SaveChangesAsync();
+                var token = TokenGenerator.GenerateToken();
+                usuario.ConfirmationToken = token;
 
-                usuario.Contrasena = string.Empty;
+                var confirmationLink = Url.Action(
+                    nameof(ConfirmarCorreo),
+                    "Usuario",
+                    new { userId = usuario.IdUsuario, token = token },
+                    Request.Scheme);
+                await _emailService.SendEmailAsync(usuario.CorreoElectronico, "Confirmar correo electrónico", $"Por favor confirma tu correo electrónico haciendo clic en el siguiente enlace: <a href='{confirmationLink}'>Confirmar correo electrónico</a>");
 
-                return CreatedAtAction(nameof(GetUsuario), new { id = usuario.IdUsuario }, usuario);
+                return Ok("Por favor, revisa tu correo electrónico para confirmar tu registro.");
             }
             catch (Exception ex)
-            {                
+            {
                 return BadRequest($"Error al crear el Usuario: {ex.Message}");
+            }
+        }
+
+        [HttpGet]
+        [Route("ConfirmarCorreo")]
+        public async Task<IActionResult> ConfirmarCorreo(Guid userId, string token)
+        {
+            var usuario = await _context.Usuarios.FindAsync(userId);
+            if (usuario != null && usuario.ConfirmationToken == token)
+            {
+                usuario.EmailConfirmado = true;
+                usuario.ConfirmationToken = null;
+                await _context.SaveChangesAsync();
+
+                return Ok("Correo electrónico confirmado con éxito.");
+            }
+            else{
+                return BadRequest("No se pudo confirmar el correo electrónico.");
             }
         }
 
