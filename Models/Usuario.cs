@@ -28,7 +28,7 @@ namespace LionDev.Models
         public string NumeroDeDocumento { get; set; }*/
 
         [Required]
-        [RegularExpression(@"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{5,30}$", 
+        [RegularExpression(@"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{5,30}$",
             ErrorMessage = "La contraseña debe tener mayúsculas, minúsculas y números")]
         public string Contrasena { get; set; }
 

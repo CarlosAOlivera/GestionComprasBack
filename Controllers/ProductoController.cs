@@ -13,18 +13,16 @@ namespace Backend.Controllers
         //public IConfiguration _configuration;
         private readonly ApplicationDbContext _context;
 
-        public ProductoController(/*IConfiguration configuration*/ ApplicationDbContext context)
-        {
+        public ProductoController(/*IConfiguration configuration*/ ApplicationDbContext context) =>
             //_configuration = configuration;
             _context = context;
-        }
 
         // GET: api/v1/Producto/GetByName/{name}
         [HttpGet]
         [Route("api/v1/Producto/{name}")]
         public async Task<ActionResult<IEnumerable<Producto>>> GetByName(string name)
         {
-            
+
             var productos = await _context.Productos
                             .Where(p => p.Nombre.Contains(name))
                             .ToListAsync();

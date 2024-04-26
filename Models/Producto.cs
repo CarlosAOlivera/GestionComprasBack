@@ -2,9 +2,9 @@
 {
     public class Producto
     {
-        public Guid IdProducto { get; set; } 
+        public Guid IdProducto { get; set; }
 
-        public required string  Nombre { get; set;}
+        public required string Nombre { get; set; }
         public required string Referencia { get; set; }
         public string? UrlImagen { get; set; }
         public string? Descripcion { get; set; }

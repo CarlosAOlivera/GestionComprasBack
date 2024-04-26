@@ -104,142 +104,142 @@ namespace Backend.Controllers
 
     }
 }
-    
-        /*private string GenerateJwtToken(Usuario usuario)
+
+/*private string GenerateJwtToken(Usuario usuario)
+{
+    var jwt = _configuration.GetSection("Jwt")
+       .Get<Jwt>();
+
+    var claims = new List<Claim>
+    {
+        new Claim(JwtRegisteredClaimNames.Sub, jwtSetting.Subject),
+        new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+        new Claim(JwtRegisteredClaimNames.Iat, DateTime.UtcNow.ToString("yyyy-MM-dd HH:mm:ss")),                    
+        new Claim("id", usuario.IdUsuario.ToString()),
+        new Claim("correo", usuario.CorreoElectronico)
+    };
+
+    var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwt.Key));
+    var singIngCred = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+
+    var token = new JwtSecurityToken(
+            issuer: jwtSettings.Issuer,
+            audience: jwtSettings.Audience,
+            claims: claims,
+            expires: DateTime.UtcNow.AddMinutes(60),
+            signingCredentials: singIngCred
+    );
+
+    return new JwtSecurityTokenHandler().WriteToken(token);
+}*/
+
+
+// GET: Usuario/Usuarios
+[HttpGet]
+public async Task<ActionResult<IEnumerable<Usuario>>> GetUsuarios()
+{
+    return await _context.Usuarios.ToListAsync();
+}
+
+// GET: Usuario/GetUsuario/5
+[HttpGet("{id}")]
+public async Task<ActionResult<Usuario>> GetUsuario(Guid id)
+{
+    var Usuario = await _context.Usuarios.FindAsync(id);
+
+    if (Usuario == null)
+    {
+        return NotFound();
+    }
+
+    return Usuario;
+}
+
+[HttpGet]
+[Route("check-email")]
+public async Task<ActionResult<bool>> CheckEmail([FromQuery] string email)
+{
+    var usuario = await _context.Usuarios
+        .AsNoTracking()
+        .SingleOrDefaultAsync(u => u.CorreoElectronico == email);
+
+    return usuario != null;
+}
+
+// POST: Usuario/Guardar
+[HttpPost]
+[Route("Guardar")]
+public async Task<ActionResult<Usuario>> Guardar([FromBody] Usuario usuario)
+{
+    try
+    {
+        usuario.IdUsuario = Guid.NewGuid();
+
+        var hasher = new PasswordHasher<Usuario>();
+        usuario.Contrasena = hasher.HashPassword(usuario, usuario.Contrasena);
+
+        _context.Usuarios.Add(usuario);
+        await _context.SaveChangesAsync();
+
+        usuario.Contrasena = string.Empty;
+
+        return CreatedAtAction(nameof(GetUsuario), new { id = usuario.IdUsuario }, usuario);
+    }
+    catch (Exception ex)
+    {
+        return BadRequest($"Error al crear el Usuario: {ex.Message}");
+    }
+}
+
+// PUT: Usuario/Usuarios/5
+[HttpPut("{id}")]
+public async Task<IActionResult> PutUsuario(Guid id, Usuario Usuario)
+{
+    if (id != Usuario.IdUsuario)
+    {
+        return BadRequest();
+    }
+
+    _context.Entry(Usuario).State = EntityState.Modified;
+
+    try
+    {
+        await _context.SaveChangesAsync();
+    }
+    catch (DbUpdateConcurrencyException)
+    {
+        if (!UsuarioExists(id))
         {
-            var jwt = _configuration.GetSection("Jwt")
-               .Get<Jwt>();
-
-            var claims = new List<Claim>
-            {
-                new Claim(JwtRegisteredClaimNames.Sub, jwtSetting.Subject),
-                new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-                new Claim(JwtRegisteredClaimNames.Iat, DateTime.UtcNow.ToString("yyyy-MM-dd HH:mm:ss")),                    
-                new Claim("id", usuario.IdUsuario.ToString()),
-                new Claim("correo", usuario.CorreoElectronico)
-            };
-
-            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwt.Key));
-            var singIngCred = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
-
-            var token = new JwtSecurityToken(
-                    issuer: jwtSettings.Issuer,
-                    audience: jwtSettings.Audience,
-                    claims: claims,
-                    expires: DateTime.UtcNow.AddMinutes(60),
-                    signingCredentials: singIngCred
-            );
-
-            return new JwtSecurityTokenHandler().WriteToken(token);
-        }*/
-
-
-        // GET: Usuario/Usuarios
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<Usuario>>> GetUsuarios()
-        {
-            return await _context.Usuarios.ToListAsync();
+            return NotFound();
         }
-
-        // GET: Usuario/GetUsuario/5
-        [HttpGet("{id}")]
-        public async Task<ActionResult<Usuario>> GetUsuario(Guid id)
+        else
         {
-            var Usuario = await _context.Usuarios.FindAsync(id);
-
-            if (Usuario == null)
-            {
-                return NotFound();
-            }
-
-            return Usuario;
+            throw;
         }
+    }
 
-        [HttpGet]
-        [Route("check-email")]
-        public async Task<ActionResult<bool>> CheckEmail([FromQuery] string email)
-        {
-            var usuario = await _context.Usuarios
-                .AsNoTracking()
-                .SingleOrDefaultAsync(u => u.CorreoElectronico == email);
+    return NoContent();
+}
 
-            return usuario != null;
-        }
+// DELETE: Usuario/Usuarios/5
+[HttpDelete("{id}")]
+public async Task<IActionResult> DeleteUsuario(Guid id)
+{
+    var Usuario = await _context.Usuarios.FindAsync(id);
+    if (Usuario == null)
+    {
+        return NotFound();
+    }
 
-        // POST: Usuario/Guardar
-        [HttpPost]
-        [Route("Guardar")]
-        public async Task<ActionResult<Usuario>> Guardar([FromBody] Usuario usuario)
-        {
-            try
-            {
-                usuario.IdUsuario = Guid.NewGuid();
+    _context.Usuarios.Remove(Usuario);
+    await _context.SaveChangesAsync();
 
-                var hasher = new PasswordHasher<Usuario>();
-                usuario.Contrasena = hasher.HashPassword(usuario, usuario.Contrasena);
+    return NoContent();
+}
 
-                _context.Usuarios.Add(usuario);
-                await _context.SaveChangesAsync();
-
-                usuario.Contrasena = string.Empty;
-
-                return CreatedAtAction(nameof(GetUsuario), new { id = usuario.IdUsuario }, usuario);
-            }
-            catch (Exception ex)
-            {                
-                return BadRequest($"Error al crear el Usuario: {ex.Message}");
-            }
-        }
-
-        // PUT: Usuario/Usuarios/5
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutUsuario(Guid id, Usuario Usuario)
-        {
-            if (id != Usuario.IdUsuario)
-            {
-                return BadRequest();
-            }
-
-            _context.Entry(Usuario).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!UsuarioExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return NoContent();
-        }
-
-        // DELETE: Usuario/Usuarios/5
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteUsuario(Guid id)
-        {
-            var Usuario = await _context.Usuarios.FindAsync(id);
-            if (Usuario == null)
-            {
-                return NotFound();
-            }
-
-            _context.Usuarios.Remove(Usuario);
-            await _context.SaveChangesAsync();
-
-            return NoContent();
-        }
-
-        private bool UsuarioExists(Guid id)
-        {
-            return _context.Usuarios.Any(e => e.IdUsuario == id);
-        }
+private bool UsuarioExists(Guid id)
+{
+    return _context.Usuarios.Any(e => e.IdUsuario == id);
+}
     }
 }

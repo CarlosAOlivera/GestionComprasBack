@@ -4,6 +4,6 @@
     "\\Controllers",
     "\\Models"
   ],
-  "SelectedNode": "\\ApplicationDbContext.cs",
+  "SelectedNode": "\\Controllers\\ProductoController.cs",
   "PreviewInSolutionExplorer": false
 }
