@@ -14,7 +14,6 @@ using LionDev;
 using System.Linq;
 using LionDev.Models;
 using LionDev.Services;
-using LionDev.Configurations;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -25,8 +24,8 @@ builder.Services.AddControllers().AddJsonOptions(x =>
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-builder.Services.Configure<SendGridSettings>(builder.Configuration.GetSection("SendGrid"));
-builder.Services.AddTransient<IEmailService, SendGridEmailService>();
+builder.Services.AddTransient<IEmailService, SmtpEmailService>();
+builder.Logging.AddConsole();
 
 // Entity Framework Core DbContext configuration
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
@@ -62,12 +61,6 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
         };
     });
 
-builder.Services.Configure<SendGridSettings>(builder.Configuration.GetSection("SendGrid"));
-
-builder.Services.PostConfigure<SendGridSettings>(options =>
-{
-    options.ApiKey = Environment.GetEnvironmentVariable("SENDGRID_API_KEY") ?? options.ApiKey;
-});
 
 var app = builder.Build();
 
