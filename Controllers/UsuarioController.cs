@@ -18,15 +18,27 @@ namespace Backend.Controllers
 
     public class UsuarioController : ControllerBase
     {
-        public IConfiguration _configuration;
-        private ApplicationDbContext _context;
-        private IEmailService _emailService;
+        public readonly IConfiguration _configuration;
+        private readonly ApplicationDbContext _context;
+        private readonly IEmailService _emailService;
+        private readonly ILogger<UsuarioController> _logger;
+        private string email;
 
-        public UsuarioController(IConfiguration configuration, ApplicationDbContext context, IEmailService emailService)
+        public UsuarioController(IConfiguration configuration,
+                                 ApplicationDbContext context,
+                                 IEmailService emailService,
+                                 ILogger<UsuarioController> logger)
         {
             _configuration = configuration;
             _context = context;
             _emailService = emailService;
+            _logger = logger;
+        }
+
+        public async Task<IActionResult> SendUserEmail(string userEmail)
+        {
+            await _emailService.SendEmailAsync(userEmail, "Subject", "Email body here");
+            return Ok();
         }
 
 
@@ -142,51 +154,96 @@ namespace Backend.Controllers
         [Route("Guardar")]
         public async Task<ActionResult<Usuario>> Guardar([FromBody] Usuario usuario)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
             try
             {
-                usuario.IdUsuario = Guid.NewGuid();
+                //Pending User Creation
+                var pendingUsuario = new PendingUsuario
+                {
+                    CorreoElectronico = usuario.CorreoElectronico,
+                    ConfirmationToken = TokenGenerator.GenerateToken(),
+                    EmailConfirmado = false,
+                };
 
-                var hasher = new PasswordHasher<Usuario>();
-
-                usuario.Contrasena = hasher.HashPassword(usuario, usuario.Contrasena);
-                
-                usuario.EmailConfirmado = false;
-
-                var token = TokenGenerator.GenerateToken();
-                usuario.ConfirmationToken = token;
+                //Adding Pending User to Database
+                _context.PendingUsuarios.Add(pendingUsuario);
+                await _context.SaveChangesAsync();
 
                 var confirmationLink = Url.Action(
                     nameof(ConfirmarCorreo),
                     "Usuario",
-                    new { userId = usuario.IdUsuario, token = token },
+                    new { userId = pendingUsuario.Id, token = pendingUsuario.ConfirmationToken },
                     Request.Scheme);
-                await _emailService.SendEmailAsync(usuario.CorreoElectronico, "Confirmar correo electrónico", $"Por favor confirma tu correo electrónico haciendo clic en el siguiente enlace: <a href='{confirmationLink}'>Confirmar correo electrónico</a>");
+
+                await _emailService.SendRegistrationConfirmationEmailAsync(
+                    pendingUsuario.CorreoElectronico,
+                    usuario.Nombres, 
+                    pendingUsuario.ConfirmationToken,
+                    confirmationLink
+                );
+
+
 
                 return Ok("Por favor, revisa tu correo electrónico para confirmar tu registro.");
             }
             catch (Exception ex)
             {
-                return BadRequest($"Error al crear el Usuario: {ex.Message}");
+                _logger.LogError(ex, "Error al guardar el usuario");
+                return StatusCode(StatusCodes.Status500InternalServerError, $"Error al guardar el usuario: {ex.Message}");
             }
         }
 
+        private object ConfirmarCorrero()
+        {
+            throw new NotImplementedException();
+        }
+
+        // Email confirmation
         [HttpGet]
         [Route("ConfirmarCorreo")]
-        public async Task<IActionResult> ConfirmarCorreo(Guid userId, string token)
+        public async Task<IActionResult> ConfirmarCorreo(Guid Id, string token)
         {
-            var usuario = await _context.Usuarios.FindAsync(userId);
-            if (usuario != null && usuario.ConfirmationToken == token)
+            using (var transaction = _context.Database.BeginTransaction())
             {
-                usuario.EmailConfirmado = true;
-                usuario.ConfirmationToken = null;
-                await _context.SaveChangesAsync();
+                try
+                {
+                    var pendingUsuario = await _context.PendingUsuarios
+                        .FirstOrDefaultAsync(pu => pu.Id == Id && pu.ConfirmationToken == token);
 
-                return Ok("Correo electrónico confirmado con éxito.");
-            }
-            else{
-                return BadRequest("No se pudo confirmar el correo electrónico.");
+                    if (pendingUsuario != null)
+                    {
+                        var usuario = new Usuario
+                        {
+                            CorreoElectronico = pendingUsuario.CorreoElectronico,
+                            EmailConfirmado = true,
+                        };
+
+                        _context.Usuarios.Add(usuario);
+                        _context.PendingUsuarios.Remove(pendingUsuario);
+                        await _context.SaveChangesAsync();
+
+                        await transaction.CommitAsync();
+
+                        return Ok("Correo electrónico confirmado con éxito.");
+                    }
+                    else
+                    {
+                        await transaction.RollbackAsync();
+                        return BadRequest("No se pudo confirmar el correo electrónico.");
+                    }
+                }
+                catch (Exception ex)
+                {
+                    await transaction.RollbackAsync();
+                    return StatusCode(StatusCodes.Status500InternalServerError, "Ocurrió un error durante la confirmación del correo electrónico.");
+                }
             }
         }
+
 
         // PUT: Usuario/Usuarios/5
         [HttpPut("{id}")]
