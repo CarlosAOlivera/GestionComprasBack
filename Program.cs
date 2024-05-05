@@ -27,6 +27,7 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddTransient<IEmailService, SmtpEmailService>();
 builder.Logging.AddConsole();
 
+
 // Entity Framework Core DbContext configuration
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
 {
@@ -61,22 +62,28 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
         };
     });
 
+//CORS Policy Definition
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowSpecificOrigin",
+        builder => builder.WithOrigins("http://localhost:4200")
+                          .AllowAnyHeader()
+                          .AllowAnyMethod());
+});
 
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
+    app.UseDeveloperExceptionPage();
     app.UseSwagger();
     app.UseSwaggerUI();
 }
 
 app.UseHttpsRedirection();
 
-app.UseCors(options => options
-    .WithOrigins("http://localhost:4200")
-    .AllowAnyMethod()
-    .AllowAnyHeader());
+app.UseCors("AllowSpecificOrigin");
 
 app.UseAuthentication();
 app.UseAuthorization();
