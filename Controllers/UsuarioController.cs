@@ -161,34 +161,42 @@ namespace Backend.Controllers
 
             try
             {
-                //Pending User Creation
-                var pendingUsuario = new PendingUsuario
-                {
-                    CorreoElectronico = usuario.CorreoElectronico,
-                    ConfirmationToken = TokenGenerator.GenerateToken(),
-                    EmailConfirmado = false,
-                };
+                usuario.EmailConfirmado = true;
 
-                //Adding Pending User to Database
-                _context.PendingUsuarios.Add(pendingUsuario);
+                _context.Usuarios.Add(usuario);
                 await _context.SaveChangesAsync();
+            
+            
+                //Pending User Creation
+                /* var pendingUsuario = new PendingUsuario
+                 {
+                     CorreoElectronico = usuario.CorreoElectronico,
+                     ConfirmationToken = TokenGenerator.GenerateToken(),
+                     EmailConfirmado = false,
+                 };
 
-                var confirmationLink = Url.Action(
-                    nameof(ConfirmarCorreo),
-                    "Usuario",
-                    new { userId = pendingUsuario.Id, token = pendingUsuario.ConfirmationToken },
-                    Request.Scheme);
+                 //Adding Pending User to Database
+                 _context.PendingUsuarios.Add(pendingUsuario);
+                 await _context.SaveChangesAsync();
 
-                await _emailService.SendRegistrationConfirmationEmailAsync(
-                    pendingUsuario.CorreoElectronico,
-                    usuario.Nombres, 
-                    pendingUsuario.ConfirmationToken,
-                    confirmationLink
-                );
+                 var confirmationLink = Url.Action(
+                     nameof(ConfirmarCorreo),
+                     "Usuario",
+                     new { userId = pendingUsuario.Id, token = pendingUsuario.ConfirmationToken },
+                     Request.Scheme);
+
+                 await _emailService.SendRegistrationConfirmationEmailAsync(
+                     pendingUsuario.CorreoElectronico,
+                     usuario.Nombres, 
+                     pendingUsuario.ConfirmationToken,
+                     confirmationLink
+                 );
 
 
 
-                return Ok("Por favor, revisa tu correo electrónico para confirmar tu registro.");
+                return Ok("Por favor, revisa tu correo electrónico para confirmar tu registro.");*/
+
+                return Ok("Usuario registrado exitosamente.");
             }
             catch (Exception ex)
             {
@@ -203,7 +211,7 @@ namespace Backend.Controllers
         }
 
         // Email confirmation
-        [HttpGet]
+       /* [HttpGet]
         [Route("ConfirmarCorreo")]
         public async Task<IActionResult> ConfirmarCorreo(Guid Id, string token)
         {
@@ -242,7 +250,7 @@ namespace Backend.Controllers
                     return StatusCode(StatusCodes.Status500InternalServerError, "Ocurrió un error durante la confirmación del correo electrónico.");
                 }
             }
-        }
+        }*/
 
 
         // PUT: Usuario/Usuarios/5
