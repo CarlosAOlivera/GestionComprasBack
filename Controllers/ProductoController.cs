@@ -18,11 +18,36 @@ namespace Backend.Controllers
     {
         private readonly ApplicationDbContext _context;
 
+<<<<<<< HEAD
+        public ProductoController(/*IConfiguration configuration*/ ApplicationDbContext context) =>
+            //_configuration = configuration;
+=======
         public ProductoController(ApplicationDbContext context)
         {
+>>>>>>> main
             _context = context;
+
+<<<<<<< HEAD
+        // GET: api/v1/Producto/GetByName/{name}
+        [HttpGet]
+        [Route("api/v1/Producto/{name}")]
+        public async Task<ActionResult<IEnumerable<Producto>>> GetByName(string name)
+        {
+
+            var productos = await _context.Productos
+                            .Where(p => p.Nombre.Contains(name))
+                            .ToListAsync();
+
+            if (!productos.Any())
+            {
+                return NotFound("Productos no encontrados.");
+            }
+
+            return productos;
         }
 
+=======
+>>>>>>> main
         // GET: api/v1/Producto/GetMasBuscados
         [HttpGet("GetMasBuscados")]
         public async Task<ActionResult<IEnumerable<Producto>>> GetGetMasBuscados()

@@ -12,7 +12,7 @@ namespace LionDev.Models
         public static dynamic validarToken(ClaimsIdentity identity, ApplicationDbContext context)
         {
             try
-            {            
+            {
                 if (identity.Claims.Count() == 0)
                 {
                     return new
@@ -38,7 +38,7 @@ namespace LionDev.Models
                     result = usuario
                 };
             }
-            catch (Exception ex) 
+            catch (Exception ex)
             {
                 return new
                 {

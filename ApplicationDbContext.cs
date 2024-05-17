@@ -39,8 +39,9 @@ namespace LionDev
 
             // Seeds para Usuario
             modelBuilder.Entity<Usuario>().HasData(
-                new Usuario { 
-                    IdUsuario = Guid.Parse("9b380e62-52f2-4fe6-a0fc-99664828f3af"), 
+                new Usuario
+                {
+                    IdUsuario = Guid.Parse("9b380e62-52f2-4fe6-a0fc-99664828f3af"),
                     Nombres = "Radamel",
                     Apellidos = "Falcao",
                     CorreoElectronico = "rada@gmail.com",
@@ -58,7 +59,7 @@ namespace LionDev
                 }
             );
 
-            
+
             // Guids para Marca
             var fashionNovaXId = Guid.Parse("b7db804a-509d-48c8-9512-4d4671c71fd1");
 
@@ -74,7 +75,7 @@ namespace LionDev
                 .HasForeignKey(df => df.IdMarca);
 
             // Seeds para Producto
-            modelBuilder.Entity<Producto>().HasData(              
+            modelBuilder.Entity<Producto>().HasData(
                 new Producto
                 {
                     IdProducto = Guid.Parse("2d98ccdb-9393-4d36-998b-7b1ad994e8e0"),
@@ -169,7 +170,7 @@ namespace LionDev
 
             );
 
-            
+
+        }
     }
-}
 }
