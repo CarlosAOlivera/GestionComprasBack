@@ -12,6 +12,9 @@ using System.Text;
 using System.Security.Cryptography.X509Certificates;
 using LionDev;
 using System.Linq;
+using LionDev.Models;
+using LionDev.Services;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -21,6 +24,9 @@ builder.Services.AddControllers().AddJsonOptions(x =>
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.AddTransient<IEmailService, SmtpEmailService>();
+builder.Logging.AddConsole();
+
 
 // Entity Framework Core DbContext configuration
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
@@ -56,41 +62,28 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
         };
     });
 
-// Kestrel and HTTPS configuration
-/*builder.WebHost.ConfigureKestrel(serverOptions =>
+//CORS Policy Definition
+builder.Services.AddCors(options =>
 {
-    serverOptions.ListenLocalhost(5101, listenOptions =>
-    {
-        listenOptions.UseHttps(httpsOptions =>
-        {
-            httpsOptions.ServerCertificateSelector = (context, name) =>
-            {
-                using (var store = new X509Store(StoreName.My, StoreLocation.LocalMachine))
-                {
-                    store.Open(OpenFlags.ReadOnly);
-                    var certCollection = store.Certificates.Find(X509FindType.FindByThumbprint, "YOUR_CERT_THUMBPRINT", false);
-                    return certCollection.OfType<X509Certificate2>().FirstOrDefault();
-                }
-            };
-        });
-    });
-});*/
+    options.AddPolicy("AllowSpecificOrigin",
+        builder => builder.WithOrigins("http://localhost:4200")
+                          .AllowAnyHeader()
+                          .AllowAnyMethod());
+});
 
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
+    app.UseDeveloperExceptionPage();
     app.UseSwagger();
     app.UseSwaggerUI();
 }
 
 app.UseHttpsRedirection();
 
-app.UseCors(options => options
-    .WithOrigins("http://localhost:4200")
-    .AllowAnyMethod()
-    .AllowAnyHeader());
+app.UseCors("AllowSpecificOrigin");
 
 app.UseAuthentication();
 app.UseAuthorization();

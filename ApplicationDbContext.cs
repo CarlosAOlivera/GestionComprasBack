@@ -1,12 +1,12 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using LionDev.Models;
 using System;
-using Backend.Migrations;
 
 namespace LionDev
 {
     public class ApplicationDbContext : DbContext
     {
+        
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
         {
@@ -20,6 +20,7 @@ namespace LionDev
         public DbSet<Talla> Tallas { get; set; }
         public DbSet<ProductoColor> ProductoColores { get; set; }
         public DbSet<ProductoTalla> ProductoTallas { get; set; }
+        public DbSet<PendingUsuario> PendingUsuarios { get; set; }
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
