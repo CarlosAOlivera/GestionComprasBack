@@ -1,4 +1,5 @@
-﻿using LionDev.Services;
+﻿using LionDev.Models;
+using LionDev.Services;
 using System.Net;
 using System.Net.Mail;
 using System.Threading.Tasks;
@@ -46,6 +47,11 @@ namespace LionDev.Services
 
                 await client.SendMailAsync(mailMessage);
             }
+        }
+
+        public Task SendPurchaseConfirmationEmailAsync(string email, string fullName, Orden orden)
+        {
+            throw new NotImplementedException();
         }
     }
 }
