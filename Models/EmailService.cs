@@ -37,6 +37,11 @@ namespace LionDev.Services
             await smtpClient.SendMailAsync(mailMessage);
         }
 
+        public Task SendPurchaseConfirmationEmailAsync(object email, object fullName, Orden orden)
+        {
+            throw new NotImplementedException();
+        }
+
         public Task SendRegistrationConfirmationEmailAsync(string correoElectronico, object nombre, string confirmationToken, string? confirmationLink)
         {
             throw new NotImplementedException();

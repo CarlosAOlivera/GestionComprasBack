@@ -87,7 +87,12 @@ namespace LionDev.Services
             throw new NotImplementedException();
         }
 
-        public Task SendPurchaseConfirmationEmailAsync(string email, string fullName, Orden orden)
+       /* public Task SendPurchaseConfirmationEmailAsync(string email, string fullName, Orden orden)
+        {
+            throw new NotImplementedException();
+        }*/
+
+        public Task SendPurchaseConfirmationEmailAsync(object email, object fullName, Orden orden)
         {
             throw new NotImplementedException();
         }
