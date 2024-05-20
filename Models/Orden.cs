@@ -2,7 +2,7 @@
 {
     public class Orden
     {
-        public Customer { get; set; }
+        public Customer Customer { get; set; }
         public int OrdenId { get; set; }
         public List<OrdenItem> OrdenItems { get; set; } = new List<OrdenItem>();
         public decimal Total { get; set; }
