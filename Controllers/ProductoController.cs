@@ -73,21 +73,7 @@ namespace Backend.Controllers
         [HttpGet("Search")]
         public async Task<ActionResult<IEnumerable<Producto>>> GeneralSearch(string query)
         {
-            /*var criteria = ParseSearchQuery(query);
-            var queryable = _context.Productos.AsQueryable();
-
-            if (!string.IsNullOrEmpty(criteria.Name))
-                queryable = queryable.Where(p => p.Nombre.Contains(criteria.Name));
-
-            if (!string.IsNullOrEmpty(criteria.Descripcion))
-                queryable = queryable.Where(p => p.Descripcion.Contains(criteria.Descripcion));
-
-            if (!string.IsNullOrEmpty(criteria.Color))
-                queryable = queryable.Where(p => p.Color.Contains(criteria.Color));
-
-            if (!string.IsNullOrEmpty(criteria.Talla))
-                queryable = queryable.Where(p => p.Talla.Contains(criteria.Talla));*/
-
+           
             var queryable = _context.Productos.AsQueryable();
 
             foreach (var term in query.Split(' '))
