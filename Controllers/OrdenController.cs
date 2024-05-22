@@ -3,37 +3,40 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using LionDev.Services;
 using System.Threading.Tasks;
+using SendGrid.Helpers.Mail;
 
 namespace LionDev.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/v1/[controller]")]
     [ApiController]
     public class OrdenController : ControllerBase
     {
-        private readonly IEmailService _emailService;
         private readonly ApplicationDbContext _context;
+        private readonly IEmailService _emailService;
 
         public OrdenController(IEmailService emailService, ApplicationDbContext context)
         {
-            _emailService = emailService;
             _context = context;
+            _emailService = emailService;
         }
 
-        [HttpPost]
-        [Route("confirm")]
-        public async Task<IActionResult> ConfirmOrder([FromBody] Orden orden)
+        [HttpPost("complete-order")]
+        public async Task<IActionResult> CompleteOrder([FromBody] Orden orden)
         {
-            // Lógica para procesar la orden
-            // Por ejemplo, guardar la orden en la base de datos, etc.
+            if (orden == null)
+            {
+                return BadRequest("Orden no puede ser nula.");
+            }
 
-            // Enviar correo electrónico de confirmación
-            await _emailService.SendPurchaseConfirmationEmailAsync(
-                orden.Customer.Email,
-                orden.Customer.FullName,
-                orden
-            );
+            _context.Ordenes.Add(orden);
+            await _context.SaveChangesAsync();
 
-            return Ok(new { message = "Orden confirmada y email enviado" });
+            var subject = "Confirmación de Orden";
+            var content = $"Gracias por tu compra. Tu orden con ID {orden.OrdenId} ha sido recibida.";
+
+            await _emailService.SendEmailAsync(orden.Email, subject, content);
+
+            return Ok(new { message = "Orden completada y email enviado.", ordenId = orden.OrdenId });
         }
     }
 }

@@ -3,6 +3,7 @@ using Microsoft.Extensions.Options;
 using System.Net;
 using System.Net.Mail;
 using System.Threading.Tasks;
+using System.Linq;
 
 namespace LionDev.Services
 {
@@ -15,33 +16,21 @@ namespace LionDev.Services
             _emailSettings = emailSettings.Value;
         }
 
-        public async Task SendEmailAsync(string toEmail, string subject, string content, bool useDefaultCredentials = false)
+        public async Task SendEmailAsync(string toEmail, string subject, string content)
         {
-            SmtpClient client;
-            if (useDefaultCredentials)
+
+            var client = new SmtpClient("smtp.gmail.com", 587)
             {
-                client = new SmtpClient("smtp.gmail.com", 587)
-                {
-                    UseDefaultCredentials = false,
-                    Credentials = new NetworkCredential("co4100005@gmail.com", "jkew mhfj rzih jzac"),
-                    EnableSsl = true
-                };
-            }
-            else
-            {
-                client = new SmtpClient(_emailSettings.MailServer, _emailSettings.MailPort)
-                {
-                    UseDefaultCredentials = false,
-                    Credentials = new NetworkCredential(_emailSettings.Sender, _emailSettings.Password),
-                    EnableSsl = true
-                };
-            }
+                UseDefaultCredentials = false,
+                Credentials = new NetworkCredential("co4100005@gmail.com", "jkew mhfj rzih jzac"),
+                EnableSsl = true
+            };
 
             using (client)
             {
                 var mailMessage = new MailMessage
                 {
-                    From = new MailAddress(useDefaultCredentials ? "co4100005@gmail.com" : _emailSettings.Sender),
+                    From = new MailAddress("co4100005@gmail.com"),
                     Subject = subject,
                     Body = content,
                     IsBodyHtml = true,
@@ -52,14 +41,9 @@ namespace LionDev.Services
             }
         }
 
-        public Task SendEmailAsync(string toEmail, string subject, string content)
-        {
-            throw new NotImplementedException();
-        }
-
         public async Task SendPurchaseConfirmationEmailAsync(string toEmail, string customerName, Orden orden)
         {
-            var subject = "Confirmación de tu compra en [Nombre de la Tienda]";
+            var subject = "Confirmación de tu compra en FullStack Fusion";
 
             var content = $@"
             <html>
@@ -74,25 +58,14 @@ namespace LionDev.Services
                 <p>Fecha estimada de entrega: {orden.EstimatedDeliveryDate.ToShortDateString()}</p>
                 <p>Si tienes preguntas sobre tu pedido, no dudes en contactarnos a [tu-email-de-contacto].</p>
                 <p>Gracias por elegirnos,</p>
-                <p>[Nombre de la Tienda]</p>
+                <p>FullStack Fusion</p>
             </body>
             </html>";
 
             await SendEmailAsync(toEmail, subject, content);
         }
 
-
         public Task SendRegistrationConfirmationEmailAsync(string toEmail, object nombre, string confirmationToken, string? confirmationLink)
-        {
-            throw new NotImplementedException();
-        }
-
-       /* public Task SendPurchaseConfirmationEmailAsync(string email, string fullName, Orden orden)
-        {
-            throw new NotImplementedException();
-        }*/
-
-        public Task SendPurchaseConfirmationEmailAsync(object email, object fullName, Orden orden)
         {
             throw new NotImplementedException();
         }

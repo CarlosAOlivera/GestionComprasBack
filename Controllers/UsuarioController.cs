@@ -21,6 +21,7 @@ namespace LionDev.Controllers
         private readonly IEmailService _emailService;
         private readonly ILogger<UsuarioController> _logger;
 
+
         public UsuarioController(IConfiguration configuration,
                                  ApplicationDbContext context,
                                  IEmailService emailService,
@@ -122,7 +123,8 @@ namespace LionDev.Controllers
                     {
                         success = true,
                         message = "Login exitoso",
-                        result = tokenString
+                        result = tokenString,
+                        nombre = $"{usuario.Nombres}"
                     };
                 }
                 else
