@@ -1,23 +1,23 @@
 {
   "format": 1,
   "restore": {
-    "C:\\dev\\GestionComprasBack\\Backend.csproj": {}
+    "C:\\Users\\Asaviel\\GestionComprasBack\\Backend.csproj": {}
   },
   "projects": {
-    "C:\\dev\\GestionComprasBack\\Backend.csproj": {
+    "C:\\Users\\Asaviel\\GestionComprasBack\\Backend.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\dev\\GestionComprasBack\\Backend.csproj",
+        "projectUniqueName": "C:\\Users\\Asaviel\\GestionComprasBack\\Backend.csproj",
         "projectName": "Backend",
-        "projectPath": "C:\\dev\\GestionComprasBack\\Backend.csproj",
-        "packagesPath": "C:\\Users\\carlo\\.nuget\\packages\\",
-        "outputPath": "C:\\dev\\GestionComprasBack\\obj\\",
+        "projectPath": "C:\\Users\\Asaviel\\GestionComprasBack\\Backend.csproj",
+        "packagesPath": "C:\\Users\\Asaviel\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\Asaviel\\GestionComprasBack\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
         ],
         "configFilePaths": [
-          "C:\\Users\\carlo\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\Asaviel\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
@@ -112,7 +112,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.202\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.204\\RuntimeIdentifierGraph.json"
         }
       }
     }
