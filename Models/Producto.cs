@@ -2,9 +2,9 @@
 {
     public class Producto
     {
-        public Guid IdProducto { get; set; } 
+        public Guid IdProducto { get; set; }
 
-        public required string  Nombre { get; set;}
+        public required string Nombre { get; set; }
         public required string Referencia { get; set; }
         public string? UrlImagen { get; set; }
         public string? Descripcion { get; set; }
@@ -15,8 +15,8 @@
         public required bool EsDeLosMasBuscados { get; set; }
         public required string ParaSexo { get; set; }
 
-        //public Guid IdMarca { get; set; }
-        //public required Marca Marca { get; set; }
+        public Guid IdMarca { get; set; }
+        public Marca? Marca { get; set; }
 
         //public required ICollection<DetalleFactura> DetalleFactura { get; set; }
     }

@@ -1,6 +1,5 @@
-﻿using LionDev;
+﻿using LionDev.Services;
 using LionDev.Models;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -8,177 +7,36 @@ using Newtonsoft.Json;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
-using System.Threading.Tasks;
+using BCrypt.Net;
+using Org.BouncyCastle.Crypto.Generators;
 
-namespace Backend.Controllers
+namespace LionDev.Controllers
 {
     [ApiController]
-    [Route("Usuario")]
-
-    //public class LoginDto
-    /*{
-        public string CorreoElectronico { get; set; }
-        public string Contrasena { get; set; }
-    }*/
+    [Route("api/[controller]")]
     public class UsuarioController : ControllerBase
     {
-        public IConfiguration _configuration;
-        private ApplicationDbContext _context;
+        public readonly IConfiguration _configuration;
+        private readonly ApplicationDbContext _context;
+        private readonly IEmailService _emailService;
+        private readonly ILogger<UsuarioController> _logger;
 
-        public UsuarioController(IConfiguration configuration, ApplicationDbContext context)
+
+        public UsuarioController(IConfiguration configuration,
+                                 ApplicationDbContext context,
+                                 IEmailService emailService,
+                                 ILogger<UsuarioController> logger)
         {
             _configuration = configuration;
             _context = context;
+            _emailService = emailService;
+            _logger = logger;
         }
 
-        [HttpPost]
-        [Route("Login")]
-        public dynamic Login([FromBody] Object optData)
-
-        //public async Task<IActionResult> Login([FromBody] LoginDto loginDto)
+        public async Task<IActionResult> SendUserEmail(string userEmail)
         {
-            var data = JsonConvert.DeserializeObject<dynamic>(optData.ToString());            
-            string correo = data.CorreoElectronico.ToString();
-            string contrasena = data.Contrasena.ToString();
-
-
-            try
-            {
-                /*var usuario = await _context.Usuarios
-                    .AsNoTracking()
-                    .SingleOrDefaultAsync(u => u.CorreoElectronico == loginDto.CorreoElectronico);
-
-                if (usuario == null)
-                {
-                    return BadRequest(new { success = false, message = "Credenciales incorrectas" });
-                }
-
-                var hasher = new PasswordHasher<Usuario>();
-                var verificationResult = hasher.VerifyHashedPassword(usuario, usuario.Contrasena, loginDto.Contrasena);
-
-                if (verificationResult == PasswordVerificationResult.Failed)
-                {
-                    return BadRequest(new { success = false, message = "Credenciales incorrectas" });
-                }*/
-
-                Usuario Usuario = _context.Usuarios
-                    .Where(x => x.CorreoElectronico == correo && x.Contrasena == contrasena)
-                    .FirstOrDefault();
-
-                if (Usuario == null)
-                {
-                    /*var result = hasher.VerifyHashedPassword(usuario, usuario.Contrasena, contrasena);
-
-                    if (result == PasswordVerificationResult.Failed)
-                    {
-                        return new
-                        {
-                            success = false,
-                            message = "Credenciales incorrectas",
-                            result = ""
-                        };
-                    }*/
-
-                    return new
-                    {
-                        success = false,
-                        message = "Credenciales incorrectas",
-                        reult = ""
-                    };
-                }
-                    var jwt = _configuration.GetSection("Jwt")
-                    .Get<Jwt>();
-
-                    var claims = new[]
-                    {
-                    new Claim(JwtRegisteredClaimNames.Sub, jwt.Subject),
-                    new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-                    new Claim(JwtRegisteredClaimNames.Iat, DateTime.UtcNow.ToString()),
-                    new Claim("id", Usuario.IdUsuario.ToString()),
-                    new Claim("correo", Usuario.CorreoElectronico)
-                };
-
-                    var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwt.Key));
-                    var singIng = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
-
-                    var token = new JwtSecurityToken(
-                            jwt.Issuer,
-                            jwt.Audience,
-                            claims,
-                            expires: DateTime.Now.AddMinutes(60),
-                            signingCredentials: singIng
-                    );
-
-                    return new
-                    {
-                        success = true,
-                        message = "exito",
-                        result = new JwtSecurityTokenHandler().WriteToken(token)
-                    };
-
-
-                    /*var jwtToken = GenerateJwtToken(usuario);
-
-                    return Ok(new
-                    {
-                        success = true,
-                        message = "Éxito",
-                        token = jwtToken
-                    });*/
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, "An error occurred while processing your request.");
-            }
-        }
-    
-        /*private string GenerateJwtToken(Usuario usuario)
-        {
-            var jwt = _configuration.GetSection("Jwt")
-               .Get<Jwt>();
-
-            var claims = new List<Claim>
-            {
-                new Claim(JwtRegisteredClaimNames.Sub, jwtSetting.Subject),
-                new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-                new Claim(JwtRegisteredClaimNames.Iat, DateTime.UtcNow.ToString("yyyy-MM-dd HH:mm:ss")),                    
-                new Claim("id", usuario.IdUsuario.ToString()),
-                new Claim("correo", usuario.CorreoElectronico)
-            };
-
-            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwt.Key));
-            var singIngCred = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
-
-            var token = new JwtSecurityToken(
-                    issuer: jwtSettings.Issuer,
-                    audience: jwtSettings.Audience,
-                    claims: claims,
-                    expires: DateTime.UtcNow.AddMinutes(60),
-                    signingCredentials: singIngCred
-            );
-
-            return new JwtSecurityTokenHandler().WriteToken(token);
-        }*/
-
-        // GET: Usuario/Usuarios
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<Usuario>>> GetUsuarios()
-        {
-            return await _context.Usuarios.ToListAsync();
-        }
-
-        // GET: Usuario/GetUsuario/5
-        [HttpGet("{id}")]
-        public async Task<ActionResult<Usuario>> GetUsuario(Guid id)
-        {
-            var Usuario = await _context.Usuarios.FindAsync(id);
-
-            if (Usuario == null)
-            {
-                return NotFound();
-            }
-
-            return Usuario;
+            await _emailService.SendEmailAsync(userEmail, "Subject", "Email body here");
+            return Ok();
         }
 
         // POST: Usuario/Guardar
@@ -186,25 +44,116 @@ namespace Backend.Controllers
         [Route("Guardar")]
         public async Task<ActionResult<Usuario>> Guardar([FromBody] Usuario usuario)
         {
+            if (usuario == null)
+            {
+                return BadRequest("Invalid user data.");
+            }
+
+            // Check if the email is already registered
+            bool emailExists = await _context.Usuarios.AnyAsync(u => u.CorreoElectronico == usuario.CorreoElectronico);
+            if (emailExists)
+            {
+                return BadRequest("Email already registered.");
+            }
+
+            // Hash the password
+            usuario.Contrasena = BCrypt.Net.BCrypt.HashPassword(usuario.Contrasena);
+
+            // Set the registration date and time
+            usuario.FechaRegistro = DateTime.UtcNow;
+
             try
             {
-                usuario.IdUsuario = Guid.NewGuid();
-
-                var hasher = new PasswordHasher<Usuario>();
-                usuario.Contrasena = hasher.HashPassword(usuario, usuario.Contrasena);
-
-                _context.Usuarios.Add(usuario);
+                await _context.Usuarios.AddAsync(usuario);
                 await _context.SaveChangesAsync();
-
-                usuario.Contrasena = null;
-
-                return CreatedAtAction(nameof(GetUsuario), new { id = usuario.IdUsuario }, usuario);
+                return Ok(new { Status = "Success", Message = "Usuario registrado con éxito." });
             }
             catch (Exception ex)
-            {                
-                return BadRequest($"Error al crear el Usuario: {ex.Message}");
+            {
+                _logger.LogError(ex, "Error al guardar el usuario");
+                return StatusCode(500, "Ocurrió un error al registrar el usuario.");
             }
         }
+
+
+
+
+        [HttpPost]
+        [Route("Login")]
+        public dynamic Login([FromBody] Object optData)
+        {
+            var data = JsonConvert.DeserializeObject<dynamic>(optData.ToString());
+            string correo = data.CorreoElectronico.ToString();
+            string contrasena = data.Contrasena.ToString();
+
+            try
+            {
+                var usuario = _context.Usuarios
+                    .FirstOrDefault(u => u.CorreoElectronico == correo);
+
+                if (usuario == null)
+                {
+                    return new
+                    {
+                        Status = "Error",
+                        Message = "Usuario no encontrado."
+                    };
+                }
+
+                // Verifica la contraseña hasheada
+                bool validPassword = BCrypt.Net.BCrypt.Verify(contrasena, usuario.Contrasena);
+
+                if (validPassword)
+                {
+                    var tokenHandler = new JwtSecurityTokenHandler();
+                    var key = Encoding.ASCII.GetBytes(_configuration["Jwt:Key"]);
+                    var tokenDescriptor = new SecurityTokenDescriptor
+                    {
+                        Subject = new ClaimsIdentity(new Claim[]
+                        {
+                            new Claim(ClaimTypes.Name, usuario.CorreoElectronico.ToString())
+                        }),
+                        Expires = DateTime.UtcNow.AddHours(2),
+                        SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
+                    };
+                    var token = tokenHandler.CreateToken(tokenDescriptor);
+                    var tokenString = tokenHandler.WriteToken(token);
+
+                    return new
+                    {
+                        success = true,
+                        message = "Login exitoso",
+                        result = tokenString,
+                        nombre = $"{usuario.Nombres}"
+                    };
+                }
+                else
+                {
+                    return new
+                    {
+                        Status = "Error",
+                        Message = "Email o Password incorrecto."
+                    };
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error during login");
+                return StatusCode(500, "Ocurrió un error al procesar la solicitud.");
+            }
+        }
+
+        //Email Verification        
+        [HttpGet]
+        [Route("check-email")]
+        public async Task<ActionResult<bool>> CheckEmail([FromQuery] string email)
+        {
+            var usuario = await _context.Usuarios
+                .AsNoTracking()
+                .SingleOrDefaultAsync(u => u.CorreoElectronico == email);
+
+            return usuario != null;
+        }     
 
         // PUT: Usuario/Usuarios/5
         [HttpPut("{id}")]
