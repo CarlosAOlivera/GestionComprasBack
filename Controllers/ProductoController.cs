@@ -3,20 +3,31 @@ using LionDev.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using Backend.Models;
+
 
 namespace Backend.Controllers
 {
 
     [ApiController]
+    [Route("api/v1/[controller]")]
     public class ProductoController : ControllerBase
     {
-        //public IConfiguration _configuration;
         private readonly ApplicationDbContext _context;
 
+<<<<<<< HEAD
         public ProductoController(/*IConfiguration configuration*/ ApplicationDbContext context) =>
             //_configuration = configuration;
+=======
+        public ProductoController(ApplicationDbContext context)
+        {
+>>>>>>> main
             _context = context;
 
+<<<<<<< HEAD
         // GET: api/v1/Producto/GetByName/{name}
         [HttpGet]
         [Route("api/v1/Producto/{name}")]
@@ -35,9 +46,10 @@ namespace Backend.Controllers
             return productos;
         }
 
+=======
+>>>>>>> main
         // GET: api/v1/Producto/GetMasBuscados
-        [HttpGet]
-        [Route("api/v1/Producto/GetMasBuscados")]
+        [HttpGet("GetMasBuscados")]
         public async Task<ActionResult<IEnumerable<Producto>>> GetGetMasBuscados()
         {
             var productos = await _context.Productos
@@ -53,8 +65,7 @@ namespace Backend.Controllers
         }
 
         // GET: api/v1/Producto/GetBySexo/{paraSexo}
-        [HttpGet]
-        [Route("api/v1/Producto/GetBySexo/{paraSexo}")]
+        [HttpGet("GetBySexo/{paraSexo}")]
         public async Task<ActionResult<IEnumerable<Producto>>> GetBySexo(string paraSexo)
         {
             var productos = await _context.Productos
@@ -69,38 +80,54 @@ namespace Backend.Controllers
             return productos;
         }
 
-        // GET: api/v1/Producto/GetByMarca/{marca}
-        [HttpGet]
-        [Route("api/v1/Producto/GetByMarca/{marca}")]
-        public async Task<ActionResult<IEnumerable<Producto>>> GetByMarca(string marca)
+        //Método de búsqueda general.
+        [HttpGet("Search")]
+        public async Task <ActionResult<IEnumerable<Producto>>> GeneralSearch(string query)
         {
-            var productos = await _context.Productos
-                    .Where(p => p.Marca != null && p.Marca.Nombre.ToLower().Contains(marca.ToLower()))
-                    .ToListAsync();
+            var criteria = ParseSearchQuery(query);
+            var queryable = _context.Productos.AsQueryable();
+            queryable = queryable.Where(p => p.Nombre.Contains(query) ||
+                                             p.Descripcion.Contains(query) ||
+                                             p.Color.Contains(query) ||
+                                             p.Talla.Contains(query));
 
-            if (!productos.Any())
-            {
-                return NotFound($"No hay productos de la marca especificada: {marca}.");
-            }
-
-            return productos;
+            var productos = await queryable.ToListAsync();
+            return productos.Any() ? Ok(productos) : NotFound("No se encontraron productos con esas caracteristicas.");
         }
 
-        // GET: api/v1/Producto/GetByColor/{color}
-        [HttpGet]
-        [Route("api/v1/Producto/GetByColor/{color}")]
-        public async Task<ActionResult<IEnumerable<Producto>>> GetByColor(string color)
+        //Método auxiliar
+        private SearchCriteria ParseSearchQuery(string query)
         {
-            var productos = await _context.Productos
-                                .Where(p => p.Color != null && p.Color.Contains(color))
-                                .ToListAsync();
-
-            if (!productos.Any())
+            var criteria = new SearchCriteria();
+            foreach (var part in query.Split(' ')) 
             {
-                return NotFound($"No hay productos del color especificado: {color}.");
+                if (IsColor(part)) criteria.Color = part;
+                else if (IsSize(part)) criteria.Talla = part;
+                else if (IsDescriptionKeyword(part)) criteria.Descripcion += part + " , ";
+                else criteria.Name += part + " ";
             }
-
-            return productos;
+            return criteria;
         }
+
+        private bool IsColor(string token)
+        {
+            var colors = new HashSet<string> { "rojo", "azul", "verde", "amarillo" };
+            return colors.Contains(token.ToLower());
+        }
+
+        private bool IsSize(string token)
+        {
+            var sizes = new HashSet<string> { "XS", "S", "M", "L", "XL", "XXL" };
+            return sizes.Contains(token.ToUpper());
+        }
+
+        private bool IsDescriptionKeyword(string token)
+        {
+            var descriptionKeywords = new HashSet<string> { "algodon", "impermeable", "transpirable", "fuerte" };
+            return descriptionKeywords.Contains(token.ToLower());
+        }
+
+
+        
     }
 }

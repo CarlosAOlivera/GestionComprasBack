@@ -19,6 +19,9 @@ namespace LionDev.Models
         [StringLength(30, MinimumLength = 9)]
         public string CorreoElectronico { get; set; }
 
+        public bool EmailConfirmado { get; set; }
+        public string? ConfirmationToken { get; set; }
+
         /*[Required]
         [StringLength(30, MinimumLength = 3)]
         public string TipoDeDocumento { get; set; }
