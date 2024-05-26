@@ -8,60 +8,49 @@ using System.Linq;
 using System.Threading.Tasks;
 using Backend.Models;
 
-
 namespace Backend.Controllers
 {
-
     [ApiController]
     [Route("api/v1/[controller]")]
     public class ProductoController : ControllerBase
     {
         private readonly ApplicationDbContext _context;
 
-<<<<<<< HEAD
-        public ProductoController(/*IConfiguration configuration*/ ApplicationDbContext context) =>
-            //_configuration = configuration;
-=======
         public ProductoController(ApplicationDbContext context)
         {
->>>>>>> main
             _context = context;
+        }
 
-<<<<<<< HEAD
         // GET: api/v1/Producto/GetByName/{name}
-        [HttpGet]
-        [Route("api/v1/Producto/{name}")]
+        [HttpGet("GetByName/{name}")]
         public async Task<ActionResult<IEnumerable<Producto>>> GetByName(string name)
         {
-
             var productos = await _context.Productos
-                            .Where(p => p.Nombre.Contains(name))
-                            .ToListAsync();
+                .Where(p => p.Nombre.Contains(name))
+                .ToListAsync();
 
             if (!productos.Any())
             {
                 return NotFound("Productos no encontrados.");
             }
 
-            return productos;
+            return Ok(productos);
         }
 
-=======
->>>>>>> main
         // GET: api/v1/Producto/GetMasBuscados
         [HttpGet("GetMasBuscados")]
-        public async Task<ActionResult<IEnumerable<Producto>>> GetGetMasBuscados()
+        public async Task<ActionResult<IEnumerable<Producto>>> GetMasBuscados()
         {
             var productos = await _context.Productos
-                            .Where(p => p.EsDeLosMasBuscados)
-                            .ToListAsync();
+                .Where(p => p.EsDeLosMasBuscados)
+                .ToListAsync();
 
             if (!productos.Any())
             {
                 return NotFound("No hay productos más buscados.");
             }
 
-            return productos;
+            return Ok(productos);
         }
 
         // GET: api/v1/Producto/GetBySexo/{paraSexo}
@@ -69,43 +58,63 @@ namespace Backend.Controllers
         public async Task<ActionResult<IEnumerable<Producto>>> GetBySexo(string paraSexo)
         {
             var productos = await _context.Productos
-                    .Where(p => p.ParaSexo.ToLower() == paraSexo.ToLower())
-                    .ToListAsync();
+                .Where(p => p.ParaSexo.ToLower() == paraSexo.ToLower())
+                .ToListAsync();
 
             if (!productos.Any())
             {
                 return NotFound($"No hay productos para el sexo especificado: {paraSexo}.");
             }
 
-            return productos;
+            return Ok(productos);
         }
 
-        //Método de búsqueda general.
+        // GET: api/v1/Producto/Search
         [HttpGet("Search")]
-        public async Task <ActionResult<IEnumerable<Producto>>> GeneralSearch(string query)
+        public async Task<ActionResult<IEnumerable<Producto>>> GeneralSearch(string query)
         {
-            var criteria = ParseSearchQuery(query);
+           
             var queryable = _context.Productos.AsQueryable();
-            queryable = queryable.Where(p => p.Nombre.Contains(query) ||
-                                             p.Descripcion.Contains(query) ||
-                                             p.Color.Contains(query) ||
-                                             p.Talla.Contains(query));
+
+            foreach (var term in query.Split(' '))
+            {
+                var lowerTerm = term.ToLower();
+                queryable = queryable.Where(p => p.Nombre.Contains(term) ||
+                                                 p.Descripcion.Contains(term) ||
+                                                 p.Color.Contains(term) ||
+                                                 p.Talla.Contains(term));
+            }
 
             var productos = await queryable.ToListAsync();
-            return productos.Any() ? Ok(productos) : NotFound("No se encontraron productos con esas caracteristicas.");
+
+            if (!productos.Any())
+            {
+                return NotFound("No se encontraron productos con esas caracteristicas.");
+            }
+
+            return Ok(productos);
         }
 
         //Método auxiliar
         private SearchCriteria ParseSearchQuery(string query)
         {
             var criteria = new SearchCriteria();
-            foreach (var part in query.Split(' ')) 
+            foreach (var part in query.Split(' '))
             {
-                if (IsColor(part)) criteria.Color = part;
-                else if (IsSize(part)) criteria.Talla = part;
-                else if (IsDescriptionKeyword(part)) criteria.Descripcion += part + " , ";
-                else criteria.Name += part + " ";
+                if (IsColor(part))
+                    criteria.Color = part;
+                else if (IsSize(part))
+                    criteria.Talla = part;
+                else if (IsDescriptionKeyword(part))
+                    criteria.Descripcion += part + " , ";
+                else
+                    criteria.Name += part + " ";
             }
+
+            // Trim trailing commas and spaces
+            criteria.Descripcion = criteria.Descripcion?.Trim(' ', ',');
+            criteria.Name = criteria.Name?.Trim();
+
             return criteria;
         }
 
@@ -126,8 +135,5 @@ namespace Backend.Controllers
             var descriptionKeywords = new HashSet<string> { "algodon", "impermeable", "transpirable", "fuerte" };
             return descriptionKeywords.Contains(token.ToLower());
         }
-
-
-        
     }
 }

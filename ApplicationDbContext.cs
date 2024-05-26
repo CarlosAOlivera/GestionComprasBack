@@ -21,6 +21,7 @@ namespace LionDev
         public DbSet<ProductoColor> ProductoColores { get; set; }
         public DbSet<ProductoTalla> ProductoTallas { get; set; }
         public DbSet<PendingUsuario> PendingUsuarios { get; set; }
+        public DbSet<Orden> Ordenes { get; set; }
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

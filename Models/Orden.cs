@@ -2,11 +2,12 @@
 {
     public class Orden
     {
-        public Customer { get; set; }
         public int OrdenId { get; set; }
-        public List<OrdenItem> OrdenItems { get; set; } = new List<OrdenItem>();
+        public string Email { get; set; }
+        public string CustomerName { get; set; }
         public decimal Total { get; set; }
         public DateTime EstimatedDeliveryDate { get; set; }
+        public ICollection<OrdenItem> OrdenItems { get; set; }
     }
 
     public class Customer
@@ -18,8 +19,9 @@
 
 public class OrdenItem
     {
+        public int Id { get; set; }
         public int Quantity { get; set; }
-        public required string ProductName { get; set; }
+        public string ProductName { get; set; }
         public decimal Price { get; set; }
     }
 }
