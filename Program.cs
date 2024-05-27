@@ -14,6 +14,8 @@ using LionDev;
 using System.Linq;
 using LionDev.Models;
 using LionDev.Services;
+using Microsoft.Extensions.Options;
+using Microsoft.AspNetCore.Mvc.Authorization;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -90,7 +92,7 @@ app.UseSwagger();
 app.UseSwaggerUI(c =>
 {
     c.SwaggerEndpoint("/swagger/v1/swagger.json", "V1 Docs");
-    c.RoutePrefix = string.Empty; // Esto hace que Swagger UI sea la página principal
+    c.RoutePrefix = string.Empty; // Esto hace que Swagger UI sea la pï¿½gina principal
 });
 
 app.UseHttpsRedirection();
@@ -101,3 +103,24 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.Run();
+
+// Rol de Admin
+const string RolAdmin = "Admin";
+
+// Permisos Admin
+builder.Services.AddAuthorization(options =>
+{   
+    options.AddPolicy("AdminPolicy", policy =>
+    {
+        policy.RequireRole(RolAdmin);
+    });
+});
+
+// Anadir middleware
+app.UseAuthorization();
+
+// Controllers para Admin
+builder.Services.AddControllers(options =>
+{
+    Options.Filters.Add(new AuthorizeFilter("AdminPolicy"));
+});
