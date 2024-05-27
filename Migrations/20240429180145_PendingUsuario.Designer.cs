@@ -4,6 +4,7 @@ using LionDev;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Backend.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240429180145_PendingUsuario")]
+    partial class PendingUsuario
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -310,12 +313,6 @@ namespace Backend.Migrations
                     b.Property<bool>("EmailConfirmado")
                         .HasColumnType("bit");
 
-                    b.Property<DateTime>("FechaRegistro")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("Id")
-                        .HasColumnType("int");
-
                     b.Property<string>("Nombres")
                         .IsRequired()
                         .HasMaxLength(30)
@@ -338,8 +335,6 @@ namespace Backend.Migrations
                             Contrasena = "Rada1",
                             CorreoElectronico = "rada@gmail.com",
                             EmailConfirmado = false,
-                            FechaRegistro = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Id = 0,
                             Nombres = "Radamel",
                             Rol = "Comprador"
                         },
@@ -350,8 +345,6 @@ namespace Backend.Migrations
                             Contrasena = "Admin1",
                             CorreoElectronico = "carlos@gmail.com",
                             EmailConfirmado = false,
-                            FechaRegistro = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Id = 0,
                             Nombres = "Carlos",
                             Rol = "Administrador"
                         });

@@ -4,6 +4,7 @@ using LionDev;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Backend.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240416004853_InitialCreateV1")]
+    partial class InitialCreateV1
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -57,28 +60,6 @@ namespace Backend.Migrations
                             IdMarca = new Guid("b7db804a-509d-48c8-9512-4d4671c71fd1"),
                             Nombre = "FASHION NOVA X"
                         });
-                });
-
-            modelBuilder.Entity("LionDev.Models.PendingUsuario", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("ConfirmationToken")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("CorreoElectronico")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("EmailConfirmado")
-                        .HasColumnType("bit");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("PendingUsuarios");
                 });
 
             modelBuilder.Entity("LionDev.Models.Producto", b =>
@@ -295,9 +276,6 @@ namespace Backend.Migrations
                         .HasMaxLength(30)
                         .HasColumnType("nvarchar(30)");
 
-                    b.Property<string>("ConfirmationToken")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("Contrasena")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -306,15 +284,6 @@ namespace Backend.Migrations
                         .IsRequired()
                         .HasMaxLength(30)
                         .HasColumnType("nvarchar(30)");
-
-                    b.Property<bool>("EmailConfirmado")
-                        .HasColumnType("bit");
-
-                    b.Property<DateTime>("FechaRegistro")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("Id")
-                        .HasColumnType("int");
 
                     b.Property<string>("Nombres")
                         .IsRequired()
@@ -337,9 +306,6 @@ namespace Backend.Migrations
                             Apellidos = "Falcao",
                             Contrasena = "Rada1",
                             CorreoElectronico = "rada@gmail.com",
-                            EmailConfirmado = false,
-                            FechaRegistro = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Id = 0,
                             Nombres = "Radamel",
                             Rol = "Comprador"
                         },
@@ -349,9 +315,6 @@ namespace Backend.Migrations
                             Apellidos = "Olivera",
                             Contrasena = "Admin1",
                             CorreoElectronico = "carlos@gmail.com",
-                            EmailConfirmado = false,
-                            FechaRegistro = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Id = 0,
                             Nombres = "Carlos",
                             Rol = "Administrador"
                         });

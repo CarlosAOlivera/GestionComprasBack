@@ -25,21 +25,21 @@ namespace LionDev.Controllers
         }
 
         [HttpGet]
-        [Route("Get")]        
+        [Route("Get")]
         public dynamic Get()
-        {        
+        {
             var identity = HttpContext.User.Identity as ClaimsIdentity;
 
             var rToken = Jwt.validarToken(identity, _context);
 
-            if(!rToken.success) return rToken;
+            if (!rToken.success) return rToken;
 
             //Usuario usuario = rToken.result;
             Usuario comprador = rToken.result;
 
             //if (usuario.rol != "administrador")
             if (comprador.Rol != "Administrador")
-                {
+            {
                 return new
                 {
                     success = false,

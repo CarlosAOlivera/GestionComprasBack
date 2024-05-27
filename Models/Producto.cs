@@ -2,9 +2,9 @@
 {
     public class Producto
     {
-        public Guid IdProducto { get; set; } 
+        public Guid IdProducto { get; set; }
 
-        public required string  Nombre { get; set;}
+        public required string Nombre { get; set; }
         public required string Referencia { get; set; }
         public string? UrlImagen { get; set; }
         public string? Descripcion { get; set; }
@@ -16,7 +16,7 @@
         public required string ParaSexo { get; set; }
 
         public Guid IdMarca { get; set; }
-        public Marca Marca { get; set; } = new Marca() { Nombre = "ValorPredeterminado" };
+        public Marca? Marca { get; set; }
 
         //public required ICollection<DetalleFactura> DetalleFactura { get; set; }
     }
