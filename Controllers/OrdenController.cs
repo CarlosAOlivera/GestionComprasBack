@@ -28,18 +28,26 @@ namespace LionDev.Controllers
                 return BadRequest("Orden no puede ser nula.");
             }
 
+            orden.CreatedDate = DateTime.UtcNow;
+           
+            // Validar campos obligatorios de la orden
+            if (string.IsNullOrEmpty(orden.CustomerEmail) || string.IsNullOrEmpty(orden.CustomerFirstName) || string.IsNullOrEmpty(orden.CustomerLastName))
+            {
+                return BadRequest("Faltan campos obligatorios en la orden.");
+            }
+
+            // Establecer una fecha estimada de entrega si no se proporciona
+            if (orden.EstimatedDeliveryDate == default)
+            {
+                orden.EstimatedDeliveryDate = DateTime.UtcNow.AddDays(7); // Estimación de 7 días
+            }
+
+            // Guardar la orden en la base de datos
+            _context.Ordenes.Add(orden);
+            await _context.SaveChangesAsync();
+
             try
             {
-                // Validar campos obligatorios de la orden
-                if (string.IsNullOrEmpty(orden.CustomerEmail) || string.IsNullOrEmpty(orden.CustomerFirstName) || string.IsNullOrEmpty(orden.CustomerLastName))
-                {
-                    return BadRequest("Faltan campos obligatorios en la orden.");
-                }
-
-                // Guardar la orden en la base de datos
-                _context.Ordenes.Add(orden);
-                await _context.SaveChangesAsync();
-
                 // Enviar correo de confirmación de la orden
                 await _emailService.SendPurchaseConfirmationEmailAsync(orden.CustomerEmail, $"{orden.CustomerFirstName} {orden.CustomerLastName}", orden);
 
