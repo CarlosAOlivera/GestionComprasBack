@@ -3,34 +3,41 @@ using LionDev.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Backend.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Backend.Controllers
 {
-    [Authorize(Roles = RolAdmin)] // Add this line to restrict access to admin role
+    [Authorize(Roles = RolAdmin)] // Restringir acceso al rol de administrador
     [ApiController]
     [Route("api/v1/[controller]")]
     public class ProductoController : ControllerBase
     {
         private readonly ApplicationDbContext _context;
+        private const string RolAdmin = "Administrador";
 
         public ProductoController(ApplicationDbContext context)
         {
-            _context = context;
+            _context = context ?? throw new ArgumentNullException(nameof(context));
         }
 
-        // GET: api/v1/Producto/GetByName/{name}
         [HttpGet("GetByName/{name}")]
         public async Task<ActionResult<IEnumerable<Producto>>> GetByName(string name)
         {
+            if (string.IsNullOrEmpty(name))
+            {
+                return BadRequest("El nombre no puede ser nulo o vacío.");
+            }
+
             var productos = await _context.Productos
                 .Where(p => p.Nombre.Contains(name))
                 .ToListAsync();
 
-            if (!productos.Any())
+            if (productos == null || !productos.Any())
             {
                 return NotFound("Productos no encontrados.");
             }
@@ -38,7 +45,6 @@ namespace Backend.Controllers
             return Ok(productos);
         }
 
-        // GET: api/v1/Producto/GetMasBuscados
         [HttpGet("GetMasBuscados")]
         public async Task<ActionResult<IEnumerable<Producto>>> GetMasBuscados()
         {
@@ -46,7 +52,7 @@ namespace Backend.Controllers
                 .Where(p => p.EsDeLosMasBuscados)
                 .ToListAsync();
 
-            if (!productos.Any())
+            if (productos == null || !productos.Any())
             {
                 return NotFound("No hay productos más buscados.");
             }
@@ -54,15 +60,19 @@ namespace Backend.Controllers
             return Ok(productos);
         }
 
-        // GET: api/v1/Producto/GetBySexo/{paraSexo}
         [HttpGet("GetBySexo/{paraSexo}")]
         public async Task<ActionResult<IEnumerable<Producto>>> GetBySexo(string paraSexo)
         {
+            if (string.IsNullOrEmpty(paraSexo))
+            {
+                return BadRequest("El parámetro 'paraSexo' no puede ser nulo o vacío.");
+            }
+
             var productos = await _context.Productos
                 .Where(p => p.ParaSexo.ToLower() == paraSexo.ToLower())
                 .ToListAsync();
 
-            if (!productos.Any())
+            if (productos == null || !productos.Any())
             {
                 return NotFound($"No hay productos para el sexo especificado: {paraSexo}.");
             }
@@ -70,11 +80,14 @@ namespace Backend.Controllers
             return Ok(productos);
         }
 
-        // GET: api/v1/Producto/Search
         [HttpGet("Search")]
         public async Task<ActionResult<IEnumerable<Producto>>> GeneralSearch(string query)
         {
-           
+            if (string.IsNullOrEmpty(query))
+            {
+                return BadRequest("La consulta no puede ser nula o vacía.");
+            }
+
             var queryable = _context.Productos.AsQueryable();
 
             foreach (var term in query.Split(' '))
@@ -88,15 +101,15 @@ namespace Backend.Controllers
 
             var productos = await queryable.ToListAsync();
 
-            if (!productos.Any())
+            if (productos == null || !productos.Any())
             {
-                return NotFound("No se encontraron productos con esas caracteristicas.");
+                return NotFound("No se encontraron productos con esas características.");
             }
 
             return Ok(productos);
         }
 
-        //Método auxiliar
+        // Métodos auxiliares
         private SearchCriteria ParseSearchQuery(string query)
         {
             var criteria = new SearchCriteria();
