@@ -28,15 +28,30 @@ namespace LionDev.Controllers
                 return BadRequest("Orden no puede ser nula.");
             }
 
-            _context.Ordenes.Add(orden);
-            await _context.SaveChangesAsync();
+            try
+            {
+                // Validar campos obligatorios de la orden
+                if (string.IsNullOrEmpty(orden.CustomerEmail) || string.IsNullOrEmpty(orden.CustomerFirstName) || string.IsNullOrEmpty(orden.CustomerLastName))
+                {
+                    return BadRequest("Faltan campos obligatorios en la orden.");
+                }
 
-            var subject = "Confirmación de Orden";
-            var content = $"Gracias por tu compra. Tu orden con ID {orden.OrdenId} ha sido recibida.";
+                // Guardar la orden en la base de datos
+                _context.Ordenes.Add(orden);
+                await _context.SaveChangesAsync();
 
-            await _emailService.SendEmailAsync(orden.Email, subject, content);
+                // Enviar correo de confirmación de la orden
+                await _emailService.SendPurchaseConfirmationEmailAsync(orden.CustomerEmail, $"{orden.CustomerFirstName} {orden.CustomerLastName}", orden);
 
-            return Ok(new { message = "Orden completada y email enviado.", ordenId = orden.OrdenId });
+                return Ok(new { message = "Orden completada y email enviado.", ordenId = orden.OrdenId });
+            }
+            catch (Exception ex)
+            {
+                // Registro de la excepción para diagnósticos
+                // Puedes usar un servicio de logging como Serilog, NLog, etc.
+                Console.WriteLine($"Error: {ex.Message}");
+                return StatusCode(500, $"Internal server error: {ex.Message}");
+            }
         }
     }
 }

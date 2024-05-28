@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Options;
 using System.Net;
 using System.Net.Mail;
+
 using System.Threading.Tasks;
 using System.Linq;
 
@@ -30,7 +31,7 @@ namespace LionDev.Services
             {
                 var mailMessage = new MailMessage
                 {
-                    From = new MailAddress("co4100005@gmail.com"),
+                    From = new MailAddress("co4100005@gmail.com", "Fusion Desings"),
                     Subject = subject,
                     Body = content,
                     IsBodyHtml = true,
@@ -43,7 +44,7 @@ namespace LionDev.Services
 
         public async Task SendPurchaseConfirmationEmailAsync(string toEmail, string customerName, Orden orden)
         {
-            var subject = "Confirmación de tu compra en FullStack Fusion";
+            var subject = "Confirmación de tu compra en Fusion Desings";
 
             var content = $@"
             <html>
@@ -56,18 +57,18 @@ namespace LionDev.Services
                 </ul>
                 <p>Total: ${orden.Total}</p>
                 <p>Fecha estimada de entrega: {orden.EstimatedDeliveryDate.ToShortDateString()}</p>
-                <p>Si tienes preguntas sobre tu pedido, no dudes en contactarnos a [tu-email-de-contacto].</p>
-                <p>Gracias por elegirnos,</p>
-                <p>FullStack Fusion</p>
+                <p>Si tienes preguntas sobre tu pedido, no dudes en contactarnos en www.fusion-designs.net</p>
+                <p> Gracias por elegirnos,</p>
+                <p> Fusion Desings </p>
             </body>
             </html>";
 
             await SendEmailAsync(toEmail, subject, content);
         }
 
-        public Task SendRegistrationConfirmationEmailAsync(string toEmail, object nombre, string confirmationToken, string? confirmationLink)
+        public Task SendRegistrationConfirmationEmailAsync(string toEmail, string nombre, string confirmationToken, string? confirmationLink)
         {
-            throw new NotImplementedException();
+            throw new NotImplementedException("Este método no está implementado.");
         }
     }
 }
