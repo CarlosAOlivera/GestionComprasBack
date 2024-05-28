@@ -10,7 +10,7 @@ using Backend.Models;
 
 namespace Backend.Controllers
 {
-    [Authorize(Roles = RolAdmin)] // Add this line to restrict access to admin role
+    //[Authorize(Roles = RolAdmin)] // Add this line to restrict access to admin role
     [ApiController]
     [Route("api/v1/[controller]")]
     public class ProductoController : ControllerBase

@@ -106,22 +106,22 @@ app.MapControllers();
 app.Run();
 
 // Rol de Admin
-const string RolAdmin = "Admin";
+//const string RolAdmin = "Admin";
 
 // Permisos Admin
-builder.Services.AddAuthorization(options =>
+/*builder.Services.AddAuthorization(options =>
 {   
     options.AddPolicy("AdminPolicy", policy =>
     {
         policy.RequireRole(RolAdmin);
     });
-});
+});*/
 
 // Anadir middleware
-app.UseAuthorization();
+//app.UseAuthorization();
 
 // Controllers para Admin
-builder.Services.AddControllers(options =>
+/*builder.Services.AddControllers(options =>
 {
     Options.Filters.Add(new AuthorizeFilter("AdminPolicy"));
-});
+});*/
