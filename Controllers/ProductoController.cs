@@ -149,5 +149,94 @@ namespace Backend.Controllers
             var descriptionKeywords = new HashSet<string> { "algodon", "impermeable", "transpirable", "fuerte" };
             return descriptionKeywords.Contains(token.ToLower());
         }
+        // GET: api/v1/Producto/GetAll
+[HttpGet("GetAll")]
+public async Task<ActionResult<IEnumerable<Producto>>> GetAllProductos()
+{
+    var productos = await _context.Productos.ToListAsync();
+
+    if (!productos.Any())
+    {
+        return NotFound("No hay productos disponibles.");
+    }
+
+    return Ok(productos);
+}
+
+// GET: api/v1/Producto/GetById/{id}
+[HttpGet("GetById/{id}")]
+public async Task<ActionResult<Producto>> GetProductoById(int id)
+{
+    var producto = await _context.Productos.FindAsync(id);
+
+    if (producto == null)
+    {
+        return NotFound($"Producto con ID {id} no encontrado.");
+    }
+
+    return Ok(producto);
+}
+
+// POST: api/v1/Producto/Add
+[HttpPost("Add")]
+public async Task<ActionResult<Producto>> AddProducto(Producto producto)
+{
+    _context.Productos.Add(producto);
+    await _context.SaveChangesAsync();
+
+    return CreatedAtAction(nameof(GetProductoById), new { id = producto.Id }, producto);
+}
+
+// PUT: api/v1/Producto/Update/{id}
+[HttpPut("Update/{id}")]
+public async Task<IActionResult> UpdateProducto(int id, Producto producto)
+{
+    if (id != producto.Id)
+    {
+        return BadRequest("ID del producto no coincide con el ID proporcionado.");
+    }
+
+    _context.Entry(producto).State = EntityState.Modified;
+
+    try
+    {
+        await _context.SaveChangesAsync();
+    }
+    catch (DbUpdateConcurrencyException)
+    {
+        if (!ProductoExists(id))
+        {
+            return NotFound($"Producto con ID {id} no encontrado.");
+        }
+        else
+        {
+            throw;
+        }
+    }
+
+    return NoContent();
+}
+
+// DELETE: api/v1/Producto/Delete/{id}
+[HttpDelete("Delete/{id}")]
+public async Task<IActionResult> DeleteProducto(int id)
+{
+    var producto = await _context.Productos.FindAsync(id);
+    if (producto == null)
+    {
+        return NotFound($"Producto con ID {id} no encontrado.");
+    }
+
+    _context.Productos.Remove(producto);
+    await _context.SaveChangesAsync();
+
+    return NoContent();
+}
+
+private bool ProductoExists(int id)
+{
+    return _context.Productos.Any(e => e.Id == id);
+}
+
     }
 }
