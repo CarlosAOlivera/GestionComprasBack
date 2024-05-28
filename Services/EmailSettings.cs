@@ -2,9 +2,20 @@
 {
     public class EmailSettings
     {
-        public string MailServer { get; set; }
-        public int MailPort { get; set; }  
-        public string Sender { get; set; }
-        public string Password { get; set; }
+        public string SmtpServer { get; set; }
+        public int SmtpPort { get; set; }
+        public string SmtpUsername { get; set; }
+        public string SmtpPassword { get; set; }
+        public string SenderName { get; set; }
+        public string SenderEmail { get; set; }
+
+        public EmailSettings()
+        {
+            SmtpServer = string.Empty;
+            SmtpUsername = string.Empty;
+            SmtpPassword = string.Empty;
+            SenderName = string.Empty;
+            SenderEmail = string.Empty;
+        }
     }
 }
